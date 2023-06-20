@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SSys Monitoring</string>
+    <string name="suggest_title_label">Suggest Title</string>
+    <string name="suggest_title_hint">Enter a title for the suggest</string>
+</resources>
