@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable-anydpi/icon_profile_selected.xml" value="0.1045" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable-anydpi/round_border_button.xml" value="0.12" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable-v24/ic_home_selected.xml" value="0.1" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable-v24/icon_add_selected.xml" value="0.113" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable-v24/icon_home_selected.xml" value="0.1" />
@@ -27,6 +28,8 @@
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/round_back_navbar.xml" value="0.1185" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/round_back_profile.xml" value="0.1" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/round_back_report.xml" value="0.1255" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/round_border.xml" value="0.12" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/round_border_blue.xml" value="0.12" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/search_edt_background.xml" value="0.118" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/transparant_background.xml" value="0.125" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/drawable/transparent_background.xml" value="0.125" />
@@ -35,12 +38,15 @@
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/activity_main.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/activity_signup.xml" value="0.22" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/bottom_navbar.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_home.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_profile.xml" value="0.16842105263157894" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_access_denied.xml" value="0.22" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_please_login.xml" value="0.16842105263157894" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_report.xml" value="0.16842105263157894" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_suggest.xml" value="0.22" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/fragment_suggestion_list.xml" value="0.16842105263157894" />
-        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/suggestion_list.xml" value="0.22" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/list_item.xml" value="0.1" />
+        <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/suggestion_list.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/suggestion_list2.xml" value="0.17297297297297298" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/suggestion_list3.xml" value="0.16842105263157894" />
         <entry key="..\:/Users/student/Downloads/Suggestion System/app/src/main/res/layout/suggestion_list4.xml" value="0.16842105263157894" />

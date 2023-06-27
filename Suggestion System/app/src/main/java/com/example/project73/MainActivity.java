@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     // set report fragment
                     getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .replace(R.id.fragment_container, ProfileFragment.class, null)
+                            .replace(R.id.fragment_container, AccessDeniedFragment.class, null)
                             .commit();
 
                     homeText.setVisibility(View.GONE);

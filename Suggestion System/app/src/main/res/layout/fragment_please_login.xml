@@ -39,15 +39,6 @@
             android:paddingEnd="20dp"
             android:background="@color/white">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Create New Suggest"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:textColor="@color/blue_200"/>
-
             <ImageView
                 android:layout_width="230dp"
                 android:layout_height="140dp"
