@@ -1,4 +1,4 @@
-# Tugas-AKhir-PRG-06
+# Tugas-Akhir-PRG-06-07
 Proyek akhir Pemrograman ke-06 (Java Android Application Program) 
 
 -- Deskripsi Proyek --
