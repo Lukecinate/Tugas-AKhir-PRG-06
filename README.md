@@ -15,5 +15,3 @@ Proyek akhir Pemrograman ke-06 (Java Android Application Program)
         == res : example_* / example_example_*
         == Layout Id : *_example
         == Attriute Name : fullName (Camel Case)
-
-    - 
