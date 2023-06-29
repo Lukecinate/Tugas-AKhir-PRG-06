@@ -1,4 +1,4 @@
-package com.example.project73;
+package com.example.project73.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,6 +10,11 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.project73.R;
+import com.example.project73.fragment.AccessDeniedFragment;
+import com.example.project73.fragment.HomeFragment;
+import com.example.project73.fragment.SuggestFragment;
 
 public class MainActivity extends AppCompatActivity {
 

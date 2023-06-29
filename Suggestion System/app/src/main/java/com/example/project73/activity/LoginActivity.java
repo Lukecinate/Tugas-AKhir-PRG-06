@@ -1,4 +1,4 @@
-package com.example.project73;
+package com.example.project73.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.project73.R;
 
 public class LoginActivity extends AppCompatActivity {
 
