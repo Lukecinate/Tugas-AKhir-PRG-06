@@ -6,7 +6,9 @@ import com.project04.WebSuggestionSystem.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,33 +21,39 @@ public class FeedbackController {
     private boolean isSucceed = true;
 
     @GetMapping("/getAllFeedback")
-    public List<Feedback> getAllFeeback(){
+    public List<Feedback> getAllFeedback(){
         return feedbackService.getAllFeedback();
     }
 
     @GetMapping("/getAllFeedbackBefore")
-    public List<Feedback> getAllFeebackBefor(){
+    public List<Feedback> getAllFeedbackBefore(){
         return feedbackService.getAllBeforeFeedback();
     }
 
     @GetMapping("/getAllFeedbackOngoing")
-    public List<Feedback> getAllFeebackOngoing(){
+    public List<Feedback> getAllFeedbackOngoing(){
         return feedbackService.getAllOngoingFeedback();
     }
 
     @GetMapping("/getAllFeedbackAfter")
-    public List<Feedback> getAllFeebackAfter(){
+    public List<Feedback> getAllFeedbackAfter(){
         return feedbackService.getAllAfterFeedback();
     }
 
-    @PostMapping("/saveFeedback")
-    public Object saveFeedback(HttpServletResponse response, @RequestBody Feedback feedbackParam){
-        isSucceed = feedbackService.save(feedbackParam);
-
-        if(isSucceed){
-            return new Result(200, "Save successfully!");
-        }else {
-            return new Result(500, "Failure : " + response.toString());
-        }
+    @GetMapping("/getFeebackByKeywords")
+    public List<Feedback> getFeebackByKeywords(@RequestParam("keyword") String keyword){
+        return feedbackService.getAllByKeywords(keyword);
     }
+
+    @PostMapping("/saveFeedback")
+    public Feedback saveFeedback(HttpServletResponse response, @RequestBody Feedback feedbackParam){
+        return feedbackService.save(feedbackParam);
+    }
+
+    @PutMapping("/updateFeedback")
+    public Feedback updateFeedback(HttpServletResponse response, @RequestParam("id") int id, @RequestBody Feedback feedbackParam){
+    
+        return feedbackService.update(id, feedbackParam);
+    } 
+
 }

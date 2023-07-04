@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2023 at 02:32 AM
+-- Generation Time: Jul 04, 2023 at 06:28 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `feedback` (
   `id` int(11) NOT NULL,
   `area_id` int(11) NOT NULL,
-  `created_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_date` datetime NOT NULL,
   `deadline` datetime NOT NULL,
   `post_photo` text DEFAULT NULL,
   `pre_photo` text NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `feedback` (
   `suggestion` text NOT NULL,
   `title` varchar(100) NOT NULL,
   `worker_name` varchar(200) DEFAULT NULL,
-  `modified_date` timestamp NULL DEFAULT NULL
+  `modified_date` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

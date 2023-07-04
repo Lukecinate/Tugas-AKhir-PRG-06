@@ -19,7 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
+            android:id="@+id/home_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="18dp"
@@ -43,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/suggest_title"
+                    android:id="@+id/home_title_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -56,7 +57,7 @@
                     tools:ignore="MissingConstraints" />
 
                 <TextView
-                    android:id="@+id/suggest_date"
+                    android:id="@+id/home_date_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="35dp"
@@ -67,7 +68,7 @@
                     tools:ignore="MissingConstraints" />
 
                 <TextView
-                    android:id="@+id/suggest_time"
+                    android:id="@+id/home_time_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="35dp"
@@ -78,7 +79,7 @@
                     tools:ignore="MissingConstraints" />
             </LinearLayout>
             <TextView
-                android:id="@+id/status"
+                android:id="@+id/home_status_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="240dp"

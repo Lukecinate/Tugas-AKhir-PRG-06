@@ -11,17 +11,15 @@ import java.util.List;
 public class FeedbackService {
     @Autowired
     FeedbackRepository feedbackRepository;
-    private boolean isSuccess = true;
 
-    public boolean save(Feedback feedback){
+
+    public Feedback save(Feedback feedback){
         Feedback res = feedbackRepository.save(feedback);
-
         if(res == null){
-            isSuccess = false;
-            return isSuccess;
-        }else {
-            return isSuccess;
+            return null;
         }
+
+        return res;
     }
 
     public List<Feedback> getAllFeedback(){
@@ -57,5 +55,19 @@ public class FeedbackService {
             return null;
 
         return res;
+    }
+
+    public Feedback update(int id, Feedback feedback){
+        Feedback res = feedbackRepository.findById(id).orElse(null);
+        
+        if(res == null){
+            return null;
+        }
+
+        return save(res);
+    }
+
+    public List<Feedback> getAllByKeywords(String keywords){
+        return feedbackRepository.findAllByKeywords(keywords);
     }
 }
