@@ -2,6 +2,7 @@ package com.example.project73.mvvm;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -21,10 +22,11 @@ public class FeedbackListViewModel extends ViewModel {
         feedbackRepository = FeedbackRepository.get();
     }
 
-    public MutableLiveData<List<Feedback>> getFeedbacks(){
-        feedbackMutableLiveData = feedbackRepository.getFeedbacks();
-        Log.d(TAG,"FeedbackListViewModel.getFeedbacks() called : " + feedbackMutableLiveData.toString());
-        return feedbackMutableLiveData;
+    public LiveData<List<Feedback>> getFeedbacks(){
+        return feedbackRepository.getFeedbacks();
+//        feedbackMutableLiveData = feedbackRepository.getFeedbacks();
+//        Log.d(TAG,"FeedbackListViewModel.getFeedbacks() called : " + feedbackRepository.getFeedbacks());
+//        return feedbackMutableLiveData;
     }
 
     public MutableLiveData<List<Feedback>> getFeedbacksAfter(){

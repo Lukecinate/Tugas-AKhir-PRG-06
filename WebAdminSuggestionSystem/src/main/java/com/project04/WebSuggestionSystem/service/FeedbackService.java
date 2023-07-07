@@ -64,6 +64,12 @@ public class FeedbackService {
             return null;
         }
 
+        res.setArea_id(feedback.getAreaId());
+        res.setPostPhoto(feedback.getPostPhoto());
+        res.setPostStatus(feedback.getPostStatus());
+        res.setWorkerName(feedback.getWorkerName());
+        res.setModifiedDate(feedback.getModifiedDate());
+
         return save(res);
     }
 

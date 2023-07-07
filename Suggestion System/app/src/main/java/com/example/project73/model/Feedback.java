@@ -1,5 +1,7 @@
 package com.example.project73.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,37 +18,37 @@ public class Feedback {
 
     @SerializedName("area_id")
     @Expose
-    private PicArea areaId;
+    private String areaId;
 
-    @SerializedName("created_date")
+    @SerializedName("createdDate")
     @Expose
-    private LocalDateTime createdDate;
+    private String createdDate;
 
     @SerializedName("deadline")
     @Expose
-    private LocalDateTime deadline;
+    private String deadline;
 
-    @SerializedName("post_photo")
+    @SerializedName("postPhoto")
     @Expose
     private String postPhoto;
 
-    @SerializedName("pre_photo")
+    @SerializedName("prePhoto")
     @Expose
     private String prePhoto;
 
-    @SerializedName("pre_status")
+    @SerializedName("preStatus")
     @Expose
     private String preStatus;
 
-    @SerializedName("post_status")
+    @SerializedName("postStatus")
     @Expose
     private String postStatus;
 
-    @SerializedName("suggest_name")
+    @SerializedName("suggestName")
     @Expose
     private String suggestName;
 
-    @SerializedName("suggest")
+    @SerializedName("suggestion")
     @Expose
     private String suggest;
 
@@ -54,18 +56,18 @@ public class Feedback {
     @Expose
     private String title;
 
-    @SerializedName("worker_name")
+    @SerializedName("workerName")
     @Expose
     private String workerName;
 
-    @SerializedName("modified_date")
+    @SerializedName("modifiedDate")
     @Expose
-    private Timestamp modifiedDate;
+    private String modifiedDate;
 
     public Feedback() {
     }
 
-    public Feedback(int id, PicArea areaId, LocalDateTime createdDate, LocalDateTime deadline, String postPhoto, String prePhoto, String preStatus, String postStatus, String suggestName, String suggest, String title, String workerName, Timestamp modifiedDate) {
+    public Feedback(int id, String areaId, String createdDate, String deadline, String postPhoto, String prePhoto, String preStatus, String postStatus, String suggestName, String suggest, String title, String workerName, String modifiedDate) {
         this.id = id;
         this.areaId = areaId;
         this.createdDate = createdDate;
@@ -89,27 +91,27 @@ public class Feedback {
         this.id = id;
     }
 
-    public PicArea getAreaId() {
+    public String getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(PicArea areaId) {
+    public void setAreaId(String areaId) {
         this.areaId = areaId;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -177,11 +179,11 @@ public class Feedback {
         this.workerName = workerName;
     }
 
-    public Timestamp getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 }

@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface FeedbackService {
@@ -24,13 +25,13 @@ public interface FeedbackService {
     @GET("getAllFeedbackAfter")
     Call<List<Feedback>> getAllFeedbackAfter();
 
-    @GET
+    @GET("getFeebackByKeywords")
     Call<List<Feedback>> search(@Query("keyword") String keyword);
 
     @POST("saveFeedback")
     Call<Feedback> saveFeedback(@Body Feedback feedback);
 
-    @PUT
-    Call<Feedback> update(@Query("id") String id, @Body Feedback feedback);
+    @PUT("updateFeedback")
+    Call<Feedback> update(@Path("id") String id, @Body Feedback feedback);
 }
 

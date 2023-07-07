@@ -44,13 +44,15 @@ public class FeedbackRepository {
         call.enqueue(new Callback<List<Feedback>>() {
             @Override
             public void onResponse(Call<List<Feedback>> call, Response<List<Feedback>> response) {
-                feedbacks.setValue(response.body());
-                Log.d(TAG, "getFeedbacks.onResponse() called");
+                if (response.isSuccessful()){
+                    feedbacks.setValue(response.body());
+                    Log.d(TAG, "getFeedbacks.onResponse() " );
+                }
             }
 
             @Override
             public void onFailure(Call<List<Feedback>> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
+                Log.e(TAG, t.getMessage());
             }
         });
 

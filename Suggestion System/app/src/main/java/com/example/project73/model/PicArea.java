@@ -13,7 +13,7 @@ public class PicArea {
     @Expose
     private String area;
 
-    @SerializedName("pic_name")
+    @SerializedName("picName")
     @Expose
     private String picName;
 

@@ -160,4 +160,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    /*@Override
+    public void onFeedbackSelected(int userId) {
+        //Log.i(TAG, "MainActivity.onUserSelected= "+userId);
+        //Fragment fragment = new UserFragment();
+        Fragment fragment = FeedFragment.newInstance(userId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }*/
 }
