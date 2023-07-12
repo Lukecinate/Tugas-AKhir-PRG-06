@@ -8,14 +8,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,15 +31,12 @@ import com.example.project73.mvvm.FeedbackListViewModel;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment {
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -46,12 +48,14 @@ public class HomeFragment extends Fragment {
     public RecyclerView mFeedbackRecyclerView;
     private HomeFragment.FeedbackAdapter mFeedbackAdapter;
     private List<Feedback> mFeedbacks;
+    private ImageButton mBeforeImageButton, mAfterImageButton, mOngoingImageButton;
+    private EditText mSearchText;
 
     public interface Callbacks {
         public void onFeedbackSelected(int feedbackId);
     }
 
-    public Callbacks callbacks = null;
+    public Callbacks mCallbacks = null;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void updateUI(List<Feedback> feedbacksParam) {
@@ -74,6 +78,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     @SuppressLint("MissingInflatedId")
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "HomeFragment.onCreateView() called");
@@ -82,6 +87,78 @@ public class HomeFragment extends Fragment {
         mFeedbackRecyclerView = (RecyclerView) v.findViewById(R.id.home_feedback_recycle_view);
         mFeedbackRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mFeedbackRecyclerView.setAdapter(mFeedbackAdapter);
+
+        mBeforeImageButton = v.findViewById(R.id.before_image_button);
+        mBeforeImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Code here, Sorting datas as status as before
+                mFeedbackListViewModel.getFeedbacksBefore().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
+
+                    @Override
+                    public void onChanged(List<Feedback> feedbacks) {
+                        mFeedbackAdapter.updateFeedbacks(feedbacks);
+                    }
+                });
+                Log.d(TAG, "beforImageButton.onClicked() called");
+            }
+        });
+
+        mAfterImageButton = v.findViewById(R.id.after_image_button);
+        mAfterImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Code here, Sorting datas as status as after
+                mFeedbackListViewModel.getFeedbacksAfter().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
+                    @Override
+                    public void onChanged(List<Feedback> feedbacks) {
+                        mFeedbackAdapter.updateFeedbacks(feedbacks);
+                    }
+                });
+                Log.d(TAG, "afterImageButton.onClicked() called");
+            }
+        });
+
+        mOngoingImageButton = v.findViewById(R.id.ongoing_image_button);
+        mOngoingImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Code here, Sorting datas as status as ongoing
+                mFeedbackListViewModel.getFeedbacksOngoing().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
+                    @Override
+                    public void onChanged(List<Feedback> feedbacks) {
+                        mFeedbackAdapter.updateFeedbacks(feedbacks);
+                    }
+                });
+                Log.d(TAG, "ongoingImageButton.onClicked() called");
+            }
+        });
+
+        mSearchText = v.findViewById(R.id.home_search_text);
+        mSearchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String searchQuery = charSequence.toString().trim();
+                mFeedbackListViewModel.getFeebacksByKeywords(searchQuery).observe(getViewLifecycleOwner(),
+                        new Observer<List<Feedback>>() {
+                            @Override
+                            public void onChanged(List<Feedback> feedbacks) {
+                                mFeedbackAdapter.updateFeedbacks(feedbacks);
+                            }
+                        });
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         return v;
     }
 
@@ -99,7 +176,7 @@ public class HomeFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public class FeedbackHolder extends RecyclerView.ViewHolder {
+    public class FeedbackHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
         private TextView titleTextView;
         private TextView dateTextView;
@@ -122,41 +199,24 @@ public class HomeFragment extends Fragment {
             statusTextView = itemView.findViewById(R.id.home_status_label);
         }
 
-        public void bindPre(Feedback feedbackParam) {
-            feedback = feedbackParam;
-
-            try {
-
-                Date date = sourceDate.parse(feedback.getDeadline());
-                String outputDate = dateFormat.format(date);
-                String outputTime = timeFormat.format(date);
-                titleTextView.setText(feedback.getTitle());
-                dateTextView.setText(outputDate);
-                timeTextView.setText(outputTime);
-                statusTextView.setText(feedback.getPreStatus());
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
         public void bind(Feedback feedbackParam) {
             feedback = feedbackParam;
             /*Glide.with(imageView.getContext())
                         .load(feedbackParam.getPrePhoto())
                         .into(imageView);*/
             try {
-                if (feedback.getPostStatus().equals("After")) {
-                    Date date = sourceDate.parse(feedback.getDeadline());
-                    String outputDate = dateFormat.format(date);
-                    String outputTime = timeFormat.format(date);
+                Date date = sourceDate.parse(feedback.getDeadline());
+                String outputDate = dateFormat.format(date);
+                String outputTime = timeFormat.format(date);
+
+                if(!feedback.getPreStatus().isEmpty()){
                     titleTextView.setText(feedback.getTitle());
                     dateTextView.setText(outputDate);
                     timeTextView.setText(outputTime);
-                    statusTextView.setText(feedback.getPostStatus());
-                } else {
-                    Date date = sourceDate.parse(feedback.getDeadline());
-                    String outputDate = dateFormat.format(date);
-                    String outputTime = timeFormat.format(date);
+                    statusTextView.setText(feedback.getPreStatus());
+                }
+
+                if(!feedback.getPostStatus().isEmpty()){
                     titleTextView.setText(feedback.getTitle());
                     dateTextView.setText(outputDate);
                     timeTextView.setText(outputTime);
@@ -166,8 +226,13 @@ public class HomeFragment extends Fragment {
                 throw new RuntimeException(e);
             }
 
+
         }
 
+        @Override
+        public void onClick(View view) {
+            mCallbacks.onFeedbackSelected(feedback.getId());
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -176,6 +241,11 @@ public class HomeFragment extends Fragment {
 
         public FeedbackAdapter(List<Feedback> feedbacks) {
             feedbackList = feedbacks;
+        }
+
+        public void updateFeedbacks(List<Feedback> feedbacks) {
+            feedbackList = feedbacks;
+            notifyDataSetChanged();
         }
 
         @NonNull
@@ -188,7 +258,6 @@ public class HomeFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull FeedbackHolder holder, int position) {
             Feedback feedback = feedbackList.get(position);
-            holder.bindPre(feedback);
             holder.bind(feedback);
         }
 
@@ -197,4 +266,20 @@ public class HomeFragment extends Fragment {
             return feedbackList.size();
         }
     }
+
+    public void sortFeedbackByStatus(String status){
+        if(mFeedbacks != null){
+            List<Feedback> feedbackSorted = new ArrayList<>();
+            for (Feedback feedback : mFeedbacks){
+                if (status.equals("Before") && feedback.getPreStatus().equals("Before")) {
+                    feedbackSorted.add(feedback);
+                } else if (status.equals("After") && feedback.getPostStatus().equals("After")) {
+                    feedbackSorted.add(feedback);
+                } else if (status.equals("Ongoing") && feedback.getPostStatus().equals("Ongoing")) {
+                    feedbackSorted.add(feedback);
+                }
+            }
+        }
+    }
+
 }

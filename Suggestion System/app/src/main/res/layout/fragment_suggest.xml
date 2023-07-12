@@ -92,7 +92,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
 
                 <AutoCompleteTextView
-                    android:id="@+id/auto_complete_textview"
+                    android:id="@+id/suggest_dropdown_menu"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:inputType="none"
@@ -101,7 +101,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <EditText
-                android:id="@+id/suggest_text"
+                android:id="@+id/suggest_suggestion_text"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="10dp"
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/cancel_button"
+                    android:id="@+id/suggest_cancel_button"
                     android:layout_width="120dp"
                     android:layout_height="55dp"
                     android:text="Cancel"
@@ -161,7 +161,7 @@
                     app:cornerRadius ="20dp"/>
 
                 <Button
-                    android:id="@+id/save_button"
+                    android:id="@+id/suggest_save_button"
                     android:layout_width="120dp"
                     android:layout_height="55dp"
                     android:text="Save"

@@ -20,6 +20,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
     @Query("SELECT f FROM Feedback f WHERE f.postStatus LIKE %:keyword%")
     List<Feedback> findAllByPostStatus(String keyword);
 
-    @Query("SELECT f FROM Feedback f WHERE CONCAT(f.postStatus, '', f.preStatus, '', f.workerName, '', f.suggestName, '', deadline) LIKE %:keyword%")
+    @Query("SELECT f FROM Feedback f WHERE CONCAT(f.postStatus, '', f.preStatus, '', f.workerName, '', f.suggestName, '', f.deadline, '', f.title) LIKE %:keyword%")
     List<Feedback> findAllByKeywords(String keyword);
 }

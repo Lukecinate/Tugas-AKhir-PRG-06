@@ -1,11 +1,9 @@
 package com.project04.WebSuggestionSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "feedback")
@@ -54,9 +52,9 @@ public class Feedback {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
-    public String getArea_id() {
-        return area_id.getArea() + " (" + area_id.getPicName() + ")";
-    }
+    // public String getArea_id() {
+    //     return area_id.getArea() + " (" + area_id.getPicName() + ")";
+    // }
 
     public PicArea getAreaId(){
         return area_id;

@@ -1,14 +1,7 @@
 package com.example.project73.model;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Feedback {
 
@@ -18,7 +11,7 @@ public class Feedback {
 
     @SerializedName("area_id")
     @Expose
-    private String areaId;
+    private int areaId;
 
     @SerializedName("createdDate")
     @Expose
@@ -67,7 +60,7 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(int id, String areaId, String createdDate, String deadline, String postPhoto, String prePhoto, String preStatus, String postStatus, String suggestName, String suggest, String title, String workerName, String modifiedDate) {
+    public Feedback(int id, int areaId, String createdDate, String deadline, String postPhoto, String prePhoto, String preStatus, String postStatus, String suggestName, String suggest, String title, String workerName, String modifiedDate) {
         this.id = id;
         this.areaId = areaId;
         this.createdDate = createdDate;
@@ -91,11 +84,11 @@ public class Feedback {
         this.id = id;
     }
 
-    public String getAreaId() {
+    public int getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(String areaId) {
+    public void setAreaId(int areaId) {
         this.areaId = areaId;
     }
 

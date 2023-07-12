@@ -56,4 +56,10 @@ public class FeedbackListViewModel extends ViewModel {
         Log.d(TAG,"FeedbackListViewModel.updateFeedback() called");
         feedbackRepository.updateFeedback(id, feedback);
     }
+
+    public MutableLiveData<List<Feedback>> getFeebacksByKeywords(String keyword){
+        feedbackMutableLiveData = feedbackRepository.getFeedback(keyword);
+        Log.d(TAG, "FeedbackListViewModel.getFeedbacksByKeyword() called");
+        return  feedbackMutableLiveData;
+    }
 }
