@@ -240,11 +240,6 @@
 
             <!--suggestion list-->
             <include layout="@layout/suggestion_list" />
-            <include layout="@layout/suggestion_list2" />
-            <include layout="@layout/suggestion_list3" />
-            <include layout="@layout/suggestion_list4" />
-            <include layout="@layout/suggestion_list5" />
-            <include layout="@layout/suggestion_list6" />
 
         </LinearLayout>
 
