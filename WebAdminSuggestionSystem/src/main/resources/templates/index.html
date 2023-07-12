@@ -2,678 +2,173 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard - NiceAdmin Bootstrap templates</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Pages / Login - NiceAdmin Bootstrap templates</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    <!-- Favicons -->
-    <link href="assets/img/syss_logo.png" rel="icon">
-    <link href="assets/img/syss_logo.png" rel="apple-touch-icon">
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
-    <!-- templates Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/r-2.4.1/datatables.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+  <!-- templates Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
 
-
-    <!-- =======================================================
-    * templates Name: NiceAdmin
-    * Updated: May 30 2023 with Bootstrap v5.3.0
-    * templates URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-templates/
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
+  <!-- =======================================================
+  * templates Name: NiceAdmin
+  * Updated: May 30 2023 with Bootstrap v5.3.0
+  * templates URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-templates/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
-<body>
+<body style="background-color: rgb(61, 61, 231);">
 
-    <!-- ======= Header ======= -->
-    <header id="header" class="header bg-primary fixed-top d-flex align-items-center">
+  <main>
+    <div class="container">
 
-        <div class="d-flex align-items-center justify-content-between">
-            <a href="/home" class="logo d-flex align-items-center">
-                <img src="assets/img/syss_logo.png" alt=""
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/syss_logo.png" alt=""
                     style="object-fit: cover; width: 6.3em; height: fit-content;">
-                <span style="font-size:1rem; color: whitesmoke;" class="d-none d-lg-block">Suggestion System</span>
-            </a>
-            <i class="bi bi-list toggle-sidebar-btn"></i>
-        </div><!-- End Logo -->
-
-        <div class="search-bar">
-            <form class="search-form d-flex align-items-center" method="POST" action="#">
-                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-            </form>
-        </div><!-- End Search Bar -->
-
-        <nav class="header-nav ms-auto">
-            <ul class="d-flex align-items-center">
-
-                <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
-                </li><!-- End Search Icon-->
-
-                <li class="nav-item dropdown">
-
-
-                </li><!-- End Notification Nav -->
-
-
-                <li class="nav-item dropdown pe-3">
-                
-                    <!--<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-                    </a>--><!-- End Profile Iamge Icon -->
-                
-                    <!--<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                        <li class="dropdown-header">
-                            <h6>Kevin Anderson</h6>
-                            <span>Admin</span>
-                        </li>
-                
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        </li>
-                
-                    </ul>--><!-- End Profile Dropdown Items -->
-                </li><!-- End Profile Nav -->
-
-            </ul>
-        </nav><!-- End Icons Navigation -->
-
-    </header><!-- End Header -->
-
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
-
-        <ul class="sidebar-nav" id="sidebar-nav">
-
-            <li class="nav-item">
-                <a class="nav-link " href="/home">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
+                  <!-- <span class="d-none d-lg-block">NiceAdmin</span> -->
                 </a>
-            </li><!-- End Dashboard Nav -->
+              </div><!-- End Logo -->
 
-        </ul>
+              <div class="card mb-3">
 
-    </aside><!-- End Sidebar-->
+                <div class="card-body">
 
-    <main id="main" class="main">
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                    <p class="text-center small">Enter your username & password to login</p>
+                  </div>
 
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
+                  <form class="row g-3 needs-validation" novalidate>
 
-        <section class="section dashboard">
-            <div class="row">
+                    <div class="col-12">
+                      <label for="username" class="form-label">Username</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="username" class="form-control" id="username">
+                        <div class="invalid-feedback">Please enter your username.</div>
+                      </div>
+                    </div>
 
-                <!-- Left side columns -->
-                <div class="col-lg-8">
-                    <div class="row">
-
-                        <!-- Pic Datas Card -->
-                        <div class="col-12">
-
-                            <div class="card info-card  sales-card">
-
-                                <div class="card-body">
-                                    <h5 class="card-title">Pic Data <span>| in total</span></h5>
-
-                                    <div class="d-flex align-items-center">
-                                        <div
-                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-journal-richtext"></i>
-                                        </div>
-                                        <div class="ps-3">
-                                            <h6 id="countAllPicData"></h6>
-                                            <span class="text-success small pt-1 fw-bold"><i
-                                                    class="bi bi-save"></i></span>
-                                            <span class="text-muted small pt-2 ps-1">saved data</span>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div><!-- End Pic Datas Card -->
-
-                        <!-- Recent Sales -->
-                        <div class="col-12">
-                            <div class="card recent-sales overflow-auto">
-                                <div class="filter mx-4">
-                                    <!-- Disabled Backdrop Modal -->
-                                    <button type="button" class="btn btn-primary btn-group-vertical"
-                                        data-bs-toggle="modal" data-bs-target="#addNewPic">
-                                        Add
-                                    </button>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Data Entries</h5>
-
-                                    <div class="modal fade" id="addNewPic" tabindex="-1" data-bs-backdrop="false"
-                                        aria-hidden="true" style="display: none;">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Add new pic area</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Custom Styled Validation with Tooltips -->
-                                                    <form class="row g-3 needs-validation" id="picAreaForm" novalidate>
-                                                        <div class="col-md-4 position-relative">
-                                                            <label for="area" class="form-label">Area</label>
-                                                            <input type="text" class="form-control" id="area"
-                                                                name="area" required>
-                                                            <div class="invalid-tooltip">
-                                                                Please provide the location area.
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 position-relative">
-                                                            <label for="picName" class="form-label">Pic name</label>
-                                                            <input type="text" class="form-control" id="picName"
-                                                                name="picName" required>
-                                                            <div class="invalid-tooltip">
-                                                                Please provide the pic name.
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal" onclick="clearForm()">
-                                                            Close
-                                                        </button>
-                                                        <button class="btn btn-primary" id="saveBtn">Save</button>
-                                                    </form><!-- End Custom Styled Validation with Tooltips -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- End Disabled Backdrop Modal-->
-
-                                    <div class="modal fade" id="updatePic" tabindex="-1" data-bs-backdrop="false"
-                                        aria-hidden="true" style="display: none;">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Update new pic area</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Custom Styled Validation with Tooltips -->
-                                                    <form class="row g-3 needs-validation" id="picAreaFormUpdate"
-                                                        novalidate>
-                                                        <input type="hidden" id="picAreaId">
-                                                        <div class="col-md-4 position-relative">
-                                                            <label for="updateArea" class="form-label">Area</label>
-                                                            <input type="text" class="form-control" id="updateArea"
-                                                                name="updateArea" required>
-                                                            <div class="invalid-tooltip">
-                                                                Please provide the location area.
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 position-relative">
-                                                            <label for="updatePicName" class="form-label">Pic
-                                                                name</label>
-                                                            <input type="text" class="form-control" id="updatePicName"
-                                                                name="updatePicName" required>
-                                                            <div class="invalid-tooltip">
-                                                                Please provide the pic name.
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal" onclick="clearForm()">
-                                                            Close
-                                                        </button>
-                                                        <button class="btn btn-primary" id="updateBtn">
-                                                            Update
-                                                        </button>
-                                                    </form><!-- End Custom Styled Validation with Tooltips -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- End Disabled Backdrop Modal-->
-
-                                    <table class="table table-borderless" id="picAreaTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Area</th>
-                                                <th scope="col">Pic Name</th>
-                                                <th scope="col">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Table rows will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-                    </div><!-- End Recent Sales -->
+                    <div class="col-12">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="password">
+                      <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="button" id="loginBtn" onclick="login()">Login</button>
+                    </div>
+                  </form>
 
                 </div>
+              </div>
 
-                <!-- Right side columns -->
-                <div class="col-lg-4">
+              <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-templates/ -->
+                Designed by <a href="https://bootstrapmade.com/" style="color: white;">BootstrapMade</a>
+              </div>
 
-                    <!-- Top Selling -->
-                    <div class="col-12">
-                        <div class="card top-selling overflow-auto">
-
-                            <div class="card-body pb-0">
-                                <h5 class="card-title">Updated Data <span>| Recent activity</span></h5>
-
-                                <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Area</th>
-                                            <th scope="col">Pic Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a>
-                                            </th>
-                                            <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas
-                                                    nulla</a></td>
-                                            <td>$64</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a>
-                                            </th>
-                                            <td><a href="#" class="text-primary fw-bold">Exercitationem similique
-                                                    doloremque</a>
-                                            </td>
-                                            <td>$46</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a>
-                                            </th>
-                                            <td><a href="#" class="text-primary fw-bold">Doloribus nisi
-                                                    exercitationem</a>
-                                            </td>
-                                            <td>$59</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a>
-                                            </th>
-                                            <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum
-                                                    error</a></td>
-                                            <td>$32</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a>
-                                            </th>
-                                            <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus
-                                                    repellendus</a>
-                                            </td>
-                                            <td>$79</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </div>
-
-                        </div>
-                    </div><!-- End Top Selling -->
-
-                </div><!-- End Right side columns -->
-
-            </div><!-- End Left side columns -->
-
-        </section>
-
-    </main><!-- End #main -->
-
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
-        <div class="copyright">
-            &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+            </div>
+          </div>
         </div>
-        <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-templates/ -->
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-        </div>
-    </footer><!-- End Footer -->
 
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+      </section>
 
-    <!-- Vendor JS Files -->
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="assets/vendor/quill/quill.min.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
+    </div>
+  </main><!-- End #main -->
 
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
-    <!-- templates Main JS File -->
-    <script src="assets/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/r-2.4.1/datatables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script>
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
 
-        // Clear the form
-        function clearForm() {
-            $("#area").val(null);
-            $("#picName").val(null);
-            $("#updateArea").val(null);
-            $("#updatePicName").val(null);
-        }
+  <!-- templates Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+  <script>
+    function login() {
+      var user = $("#username").val();
+      var pass = $("#password").val();
 
-        document.addEventListener("DOMContentLoaded", function () {
-            $(document).ready(function () {
-                // Load initial data on page load
-                loadData();
-                loadTotalData();
+      if (user === "admin" && pass === "admin") {
+        f1();
+      } else {
+        f2();
+      }
+    }
 
-                // Save PicArea
-                $("#saveBtn").click(function () {
-                    var area = $("#area").val();
-                    var picName = $("#picName").val();
-                    if (area == null || picName == null || area == "" || picName == "")
-                        return console.log("please fill the empty field!");
-                    savePicArea(area, picName);
-                });
+    function resolveAfter2Seconds(x) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(x);
+        }, 3000);
+      });
+    }
 
-                // Update PicArea
-                $("#updateBtn").click(function () {
-                    var id = $("#picAreaId").val();
-                    var area = $("#updateArea").val();
-                    var picName = $("#updatePicName").val();
-                    updatePicArea(id, area, picName);
-                });
+    async function f1() {
+      Swal.fire({
+        icon: 'success',
+        title: 'You are Authorized',
+        showConfirmButton: true,
+        timer: 3000
+      }).then((result) => {
+        $(location).attr('href', '/home');
+        
+      });
+    }
 
-                // Delete PicArea
-                $(document).on("click", ".deleteBtn", function () {
-                    var id = $(this).data("id");
-                    deletePicArea(id);
-                });
-
-                // Edit PicArea
-                $(document).on("click", ".editBtn", function () {
-                    var id = $(this).data("id");
-                    $("#updatePic").modal("show");
-                    getDetails(id);
-                });
-
-                //get details
-                function getDetails(id) {
-                    $("#picAreaId").val(id);
-
-                    $.ajax({
-                        url: "/getPicArea",
-                        type: "GET",
-                        data: { id: id },
-                        success: function (picArea) {
-                            $("#updateArea").val(picArea.area);
-                            $("#updatePicName").val(picArea.picName);
-                        }
-                    });
-                }
-
-                // Retrieve all PicAreas
-                function loadData() {
-                    $.ajax({
-                        url: "/getAllPicArea",
-                        type: "GET",
-                        success: function(data) {
-                            var tableBody = $("#picAreaTable tbody");
-                            // console.log(tableBody);
-                            tableBody.empty();
-    
-                            if (data.length > 0) {
-                                $.each(data, function(index, picArea) {
-                                    var row =
-                                        "<tr>" +
-                                        "<td>" + (index + 1) + "</td>" +
-                                        "<td>" + picArea.area + "</td>" +
-                                        "<td>" + picArea.picName + "</td>" +
-                                        "<td>" +
-                                        "<button class='btn btn-primary editBtn' data-id='" + picArea.id + "'>Edit</button> " +
-                                        "<button class='btn btn-danger deleteBtn' data-id='" + picArea.id + "'>Delete</button>" +
-                                        "</td>" +
-                                        "</tr>";
-                                    tableBody.append(row);
-                                });
-                            } else {
-                                var row = "<tr><td colspan='4'>No data available</td></tr>";
-                                tableBody.append(row);
-                            }
-                        }
-                    });
-                }
-                /*function loadData() {
-                    $.ajax({
-                        url: "/getAllPicArea",
-                        type: "GET",
-                        success: function (data) {
-                            var table = $("#picAreaTable").DataTable(); // Initialize DataTable
-
-                            // Clear existing data
-                            table.clear();
-
-                            if (data.length > 0) {
-                                $.each(data, function (index, picArea) {
-                                    var rowData = [
-                                        index + 1,
-                                        picArea.area,
-                                        picArea.picName,
-                                        "<button class='btn btn-primary editBtn' data-id='" + picArea.id + "'>Edit</button> " +
-                                        "<button class='btn btn-danger deleteBtn' data-id='" + picArea.id + "'>Delete</button>"
-                                    ];
-
-                                    table.row.add(rowData); // Add row data to DataTable
-                                });
-
-                                table.draw(); // Redraw the DataTable with updated data
-                            } else {
-                                // Show a message when there is no data available
-                                table.row.add(["No data available", "", "", ""]).draw();
-                            }
-                        }
-                    });
-                }*/
-
-
-                // Save PicArea
-                function savePicArea(area, picName) {
-                    const SUCCESS = "Successfully!";
-                    $.ajax({
-                        url: "/savePicArea",
-                        type: "POST",
-                        data: {
-                            area: area,
-                            picName: picName
-                        },
-                        success: function (result) {
-                            if (result.message === SUCCESS) {
-                                $("#addNewPic").modal("hide");
-                                loadData();
-                                clearForm();
-                                Swal.fire(
-                                    'Successful',
-                                    'Your work has been save!',
-                                    'success'
-                                );
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Something went wrong',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                console.log("Error: " + result.message);
-                            }
-                        }
-                    });
-                }
-
-                // Update PicArea
-                /*function updatePicArea(id, area, picName) {
-                    $.ajax({
-                        url: "/updatePicArea",
-                        type: "PUT",
-                        data: {
-                            id: id,
-                            area: area,
-                            picName: picName
-                        },
-                        success: function(result) {
-                            if (result.status === 200) {
-                                $("#addNewPic").modal("hide");
-                                loadData();
-                                clearForm();
-                            } else {
-                                alert("Error: " + result.message);
-                            }
-                        }
-                    });
-                }*/
-                function updatePicArea(id, area, picName) {
-                    const SUCCESS = "Successfully!";
-                    var url = "/updatePicArea?id=" + encodeURIComponent(id) +
-                        "&area=" + encodeURIComponent(area) +
-                        "&picName=" + encodeURIComponent(picName);
-
-                    $.ajax({
-                        url: "/updatePicArea",
-                        type: "PUT",
-                        data: {
-                            id: id,
-                            updateArea: area,
-                            updatePicName: picName
-                        },
-                        success: function (result) {
-                            if (result.message === SUCCESS) {
-                                $("#updatePic").modal("hide");
-                                loadData();
-                                clearForm();
-                                Swal.fire(
-                                    'Successful',
-                                    'Your work has been save!',
-                                    'success'
-                                );
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Something went wrong',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                console.log("Error: " + result.message);
-                            }
-                        }
-                    });
-                }
-
-                // Delete PicArea
-                function deletePicArea(id) {
-                    const SUCCESS = "Successfully!";
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!',
-                        cancelButtonText: 'No, cancel!',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: "/deletePicArea",
-                                type: "DELETE",
-                                data: { id: id },
-                                success: function (res) {
-                                    if (res.message === SUCCESS) {
-                                        loadData();
-                                        Swal.fire({
-                                            title: 'Deleted!',
-                                            text: 'Your file has been deleted.',
-                                            icon: 'success',
-                                            showConfirmButton: false,
-                                            timer: 1500
-                                        });
-                                    }
-
-                                    console.log(res.message);
-                                }
-                            });
-                        } else if (result.dismiss === Swal.DismissReason.cancel) {
-                            Swal.fire({
-                                title: 'Cancelled!',
-                                text: 'Your file is safe.',
-                                icon: 'error',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                            console.log("Error: " + res.message);
-                        }
-                    });
-                }
-
-                // Retreive Total Data
-                function loadTotalData() {
-
-                    $.ajax({
-                        url: "/countPicArea",
-                        type: "GET",
-                        success: function (data) {
-                            var countData = document.getElementById("countAllPicData");
-                            countData.innerHTML = data;
-                        }
-                    });
-                }
-
-
-            });
-        });
-    </script>
+    async function f2() {
+      Swal.fire({
+        icon: 'error',
+        title: 'You are not Authorized',
+        showConfirmButton: false,
+        timer: 3000
+      }).then((result) => {
+        $(location).attr('href', '/');
+        
+      });
+    }
+  </script>
 
 </body>
 
