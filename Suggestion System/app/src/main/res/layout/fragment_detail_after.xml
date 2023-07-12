@@ -53,6 +53,14 @@
 
         </androidx.cardview.widget.CardView>
 
+        <ImageButton
+            android:id='@+id/crime_camera'
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@android:drawable/ic_menu_camera"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +102,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp">
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/back_button"
@@ -112,7 +120,7 @@
                 android:id="@+id/attempt_button"
                 android:layout_width="120dp"
                 android:layout_height="55dp"
-                android:text="ATTEMPT"
+                android:text="FINISH"
                 android:textSize="15sp"
                 android:backgroundTint="@color/blue_200"
                 android:textColor="@color/white"
