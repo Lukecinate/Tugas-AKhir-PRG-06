@@ -2,9 +2,11 @@ package com.example.project73.repository;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.project73.activity.MainActivity;
 import com.example.project73.api.ApiUtils;
 import com.example.project73.api.PicAreaService;
 import com.example.project73.model.PicArea;
@@ -78,4 +80,5 @@ public class PicAreaRepository {
 
         return picArea;
     }
+
 }

@@ -9,8 +9,11 @@ import com.example.project73.api.ApiUtils;
 import com.example.project73.api.FeedbackService;
 import com.example.project73.model.Feedback;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,9 +25,11 @@ public class FeedbackRepository {
     //Attribute
     private static FeedbackRepository INSTANCE;
     private FeedbackService feedbackService;
+    private Context context;
 
     public FeedbackRepository(Context context) {
         feedbackService = ApiUtils.getFeedbackService();
+        this.context = context;
     }
 
     public static void initialize(Context context){
@@ -172,5 +177,33 @@ public class FeedbackRepository {
                 Log.e("Error : ", t.getMessage());
             }
         });
+    }
+
+    public MutableLiveData<ResponseBody> uploadfile(MultipartBody.Part file, int area_id, String created_date, String deadline, String pre_status, String suggest_name, String suggestion, String title) {
+        MutableLiveData<ResponseBody> responseData = new MutableLiveData<>();
+        Call<ResponseBody> call = feedbackService.uploadfile(file, area_id, created_date, deadline, pre_status, suggest_name, suggestion, title);
+        Log.d(TAG, "File name or path file : " + file.toString());
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d(TAG, "uploadFile.onResponse() Called");
+                if (response.isSuccessful()){
+                    Log.d(TAG, "uploadFile.onResponse() isSuccesful Called");
+                    responseData.setValue(response.body());
+                } else{
+                    Log.d(TAG, "Response URL error message : " + response.raw().request().url().toString());
+                    Log.d(TAG, "Error Message from API : " + response.message());
+                    Log.e(TAG, "errorResponse : " + response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "API ERROR : " + t.getMessage());
+            }
+        });
+
+        return responseData;
     }
 }

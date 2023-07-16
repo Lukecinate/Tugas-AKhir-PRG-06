@@ -11,13 +11,15 @@ import com.example.project73.repository.FeedbackRepository;
 
 import java.util.List;
 
-public class FeedbackListViewModel extends ViewModel {
+import okhttp3.MultipartBody;
+
+public class FeedbackViewModel extends ViewModel {
     private static final String TAG = "FeedbackListViewModel";
 
     private MutableLiveData<List<Feedback>> feedbackMutableLiveData;
     public FeedbackRepository feedbackRepository;
 
-    public FeedbackListViewModel(){
+    public FeedbackViewModel(){
         Log.d(TAG, "FeedbackListViewModel() constructor onCalled");
         feedbackRepository = FeedbackRepository.get();
     }
@@ -61,5 +63,11 @@ public class FeedbackListViewModel extends ViewModel {
         feedbackMutableLiveData = feedbackRepository.getFeedback(keyword);
         Log.d(TAG, "FeedbackListViewModel.getFeedbacksByKeyword() called");
         return  feedbackMutableLiveData;
+    }
+
+    public void addFeedback(MultipartBody.Part file, int area_id, String created_date, String deadline, String pre_status, String suggest_name, String suggestion, String title){
+        Log.d(TAG, "uploadData uploadfile onCalled()");
+        Log.d(TAG, "result : " + file+area_id);
+        feedbackRepository.uploadfile(file, area_id, created_date, deadline, pre_status, suggest_name, suggestion, title);
     }
 }

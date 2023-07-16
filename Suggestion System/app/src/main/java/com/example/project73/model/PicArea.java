@@ -26,6 +26,11 @@ public class PicArea {
         this.picName = picName;
     }
 
+    public PicArea(int i, String s) {
+        this.id = i;
+        this.area = s;
+    }
+
     public int getId() {
         return id;
     }

@@ -9,7 +9,9 @@ import java.util.List;
 
 @Repository
 public interface PicAreaRepository extends JpaRepository<PicArea, Integer> {
+    
     List<PicArea> findAll();
+
     @Query("SELECT COUNT(p) FROM PicArea p")
     Long countData();
 }

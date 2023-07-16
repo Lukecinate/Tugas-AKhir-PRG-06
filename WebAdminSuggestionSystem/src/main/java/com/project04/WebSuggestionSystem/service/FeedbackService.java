@@ -15,26 +15,24 @@ public class FeedbackService {
 
     public Feedback save(Feedback feedback){
         Feedback res = feedbackRepository.save(feedback);
-        if(res == null){
-            return null;
-        }
+        
+        if(res == null)return null;
 
         return res;
     }
 
     public List<Feedback> getAllFeedback(){
         List<Feedback> res = feedbackRepository.findAll();
-        if (res.isEmpty())
-            return null;
+        
+        if (res.isEmpty()) return null;
 
         return res;
     }
 
     public List<Feedback> getAllBeforeFeedback(){
-        List<Feedback> res = feedbackRepository.findAllByPreStatusOrderByCreatedDate();
+        List<Feedback> res = feedbackRepository.findAllByPostStatusIsNull();
 
-        if (res.isEmpty())
-            return null;
+        if (res.isEmpty()) return null;
 
         return res;
     }
@@ -42,8 +40,7 @@ public class FeedbackService {
     public List<Feedback> getAllOngoingFeedback(){
         List<Feedback> res = feedbackRepository.findAllByPostStatus("ongoing");
 
-        if (res.isEmpty())
-            return null;
+        if (res.isEmpty()) return null;
 
         return res;
     }
@@ -51,8 +48,7 @@ public class FeedbackService {
     public List<Feedback> getAllAfterFeedback(){
         List<Feedback> res = feedbackRepository.findAllByPostStatus("after");
 
-        if (res.isEmpty())
-            return null;
+        if (res.isEmpty()) return null;
 
         return res;
     }
@@ -60,9 +56,8 @@ public class FeedbackService {
     public Feedback update(int id, Feedback feedback){
         Feedback res = feedbackRepository.findById(id).orElse(null);
         
-        if(res == null){
-            return null;
-        }
+        if(res == null) return null;
+        
 
         res.setArea_id(feedback.getAreaId());
         res.setPostPhoto(feedback.getPostPhoto());

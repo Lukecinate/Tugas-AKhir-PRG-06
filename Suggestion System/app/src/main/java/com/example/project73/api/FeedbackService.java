@@ -5,6 +5,7 @@ import com.example.project73.model.Feedback;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -37,7 +38,8 @@ public interface FeedbackService {
     @PUT("updateFeedback")
     Call<Feedback> update(@Path("id") String id, @Body Feedback feedback);
 
+    @Multipart
     @POST("upload")
-    Call<String> uploadFile(@Part MultipartBody.Part file);
+    Call<ResponseBody> uploadfile(@Part MultipartBody.Part file, @Query("area_id") int area_id, @Query("created_date") String created_date, @Query("deadline") String deadline, @Query("pre_status") String pre_status, @Query("suggest_name") String suggest_name, @Query("suggestion") String suggestion, @Query("title") String title);
 }
 

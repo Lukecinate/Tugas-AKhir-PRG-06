@@ -24,14 +24,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.project73.R;
 import com.example.project73.model.Feedback;
-import com.example.project73.mvvm.FeedbackListViewModel;
+import com.example.project73.mvvm.FeedbackViewModel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -43,8 +43,9 @@ public class HomeFragment extends Fragment {
     }
 
     private static final String TAG = "HomeFragment";
+    private static final String ABSOLUTE_PATH_FILE = "C:/Users/User/Documents/PRG6/Tugas-Akhir-PRG-6-7/WebAdminSuggestionSystem/uploads/";
 
-    public FeedbackListViewModel mFeedbackListViewModel;
+    public FeedbackViewModel mFeedbackViewModel;
     public RecyclerView mFeedbackRecyclerView;
     private HomeFragment.FeedbackAdapter mFeedbackAdapter;
     private List<Feedback> mFeedbacks;
@@ -73,7 +74,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFeedbackListViewModel = new ViewModelProvider(this).get(FeedbackListViewModel.class);
+        mFeedbackViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Code here, Sorting datas as status as before
-                mFeedbackListViewModel.getFeedbacksBefore().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
+                mFeedbackViewModel.getFeedbacksBefore().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
 
                     @Override
                     public void onChanged(List<Feedback> feedbacks) {
@@ -109,7 +110,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Code here, Sorting datas as status as after
-                mFeedbackListViewModel.getFeedbacksAfter().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
+                mFeedbackViewModel.getFeedbacksAfter().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
                     @Override
                     public void onChanged(List<Feedback> feedbacks) {
                         mFeedbackAdapter.updateFeedbacks(feedbacks);
@@ -124,7 +125,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Code here, Sorting datas as status as ongoing
-                mFeedbackListViewModel.getFeedbacksOngoing().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
+                mFeedbackViewModel.getFeedbacksOngoing().observe(getViewLifecycleOwner(), new Observer<List<Feedback>>() {
                     @Override
                     public void onChanged(List<Feedback> feedbacks) {
                         mFeedbackAdapter.updateFeedbacks(feedbacks);
@@ -144,7 +145,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String searchQuery = charSequence.toString().trim();
-                mFeedbackListViewModel.getFeebacksByKeywords(searchQuery).observe(getViewLifecycleOwner(),
+                mFeedbackViewModel.getFeebacksByKeywords(searchQuery).observe(getViewLifecycleOwner(),
                         new Observer<List<Feedback>>() {
                             @Override
                             public void onChanged(List<Feedback> feedbacks) {
@@ -172,7 +173,7 @@ public class HomeFragment extends Fragment {
             Thread.currentThread().interrupt();
         }
         Log.i(TAG, "HomeFragment.onViewCreated() called");
-        mFeedbackListViewModel.getFeedbacks().observe(getViewLifecycleOwner(), this::updateUI);
+        mFeedbackViewModel.getFeedbacks().observe(getViewLifecycleOwner(), this::updateUI);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -192,7 +193,7 @@ public class HomeFragment extends Fragment {
         public FeedbackHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_suggestion, parent, false));
 
-//            imageView = itemView.findViewById(R.id.home_image);
+            imageView = itemView.findViewById(R.id.home_image_view);
             titleTextView = itemView.findViewById(R.id.home_title_label);
             dateTextView = itemView.findViewById(R.id.home_date_label);
             timeTextView = itemView.findViewById(R.id.home_time_label);
@@ -201,27 +202,37 @@ public class HomeFragment extends Fragment {
 
         public void bind(Feedback feedbackParam) {
             feedback = feedbackParam;
-            /*Glide.with(imageView.getContext())
-                        .load(feedbackParam.getPrePhoto())
-                        .into(imageView);*/
             try {
                 Date date = sourceDate.parse(feedback.getDeadline());
                 String outputDate = dateFormat.format(date);
                 String outputTime = timeFormat.format(date);
 
-                if(!feedback.getPreStatus().isEmpty()){
-                    titleTextView.setText(feedback.getTitle());
-                    dateTextView.setText(outputDate);
-                    timeTextView.setText(outputTime);
-                    statusTextView.setText(feedback.getPreStatus());
+                try {
+
+                    if (!feedback.getPreStatus().isEmpty()){
+                        Glide.with(imageView.getContext())
+                                .load(ABSOLUTE_PATH_FILE + feedbackParam.getPrePhoto())
+                                .into(imageView);
+                        titleTextView.setText(feedback.getTitle());
+                        dateTextView.setText(outputDate);
+                        timeTextView.setText(outputTime);
+                        statusTextView.setText(feedback.getPreStatus());
+
+                    }
+
+                    if(!feedback.getPostStatus().isEmpty()){
+                        Glide.with(imageView.getContext())
+                                .load(feedbackParam.getPrePhoto())
+                                .into(imageView);
+                        titleTextView.setText(feedback.getTitle());
+                        dateTextView.setText(outputDate);
+                        timeTextView.setText(outputTime);
+                        statusTextView.setText(feedback.getPostStatus());
+                    }
+                }catch (NullPointerException ne){
+                    Log.d(TAG, "Null at Id = " + feedback.getId());
                 }
 
-                if(!feedback.getPostStatus().isEmpty()){
-                    titleTextView.setText(feedback.getTitle());
-                    dateTextView.setText(outputDate);
-                    timeTextView.setText(outputTime);
-                    statusTextView.setText(feedback.getPostStatus());
-                }
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -264,21 +275,6 @@ public class HomeFragment extends Fragment {
         @Override
         public int getItemCount() {
             return feedbackList.size();
-        }
-    }
-
-    public void sortFeedbackByStatus(String status){
-        if(mFeedbacks != null){
-            List<Feedback> feedbackSorted = new ArrayList<>();
-            for (Feedback feedback : mFeedbacks){
-                if (status.equals("Before") && feedback.getPreStatus().equals("Before")) {
-                    feedbackSorted.add(feedback);
-                } else if (status.equals("After") && feedback.getPostStatus().equals("After")) {
-                    feedbackSorted.add(feedback);
-                } else if (status.equals("Ongoing") && feedback.getPostStatus().equals("Ongoing")) {
-                    feedbackSorted.add(feedback);
-                }
-            }
         }
     }
 
