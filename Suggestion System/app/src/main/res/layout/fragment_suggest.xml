@@ -126,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/blue_200"
-                tools:text="Wed Nov 14 11:56 EST 2018"
+                tools:text="Monday Mar 27 11:56 EST 2023"
+                android:text="Monday Mar 27 11:56 EST 2023"
                 android:backgroundTint="@color/blue"/>
 
             <Button
@@ -136,6 +137,7 @@
                 android:layout_marginTop="6dp"
                 android:textColor="@color/blue_200"
                 tools:text="Monday Mar 27 11:56 EST 2023"
+                android:text="Monday Mar 27 11:56 EST 2023"
                 android:backgroundTint="@color/blue"/>
 
             <LinearLayout

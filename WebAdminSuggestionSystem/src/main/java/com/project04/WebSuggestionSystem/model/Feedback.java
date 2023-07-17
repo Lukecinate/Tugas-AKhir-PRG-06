@@ -52,9 +52,9 @@ public class Feedback {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
-    // public String getArea_id() {
-    //     return area_id.getArea() + " (" + area_id.getPicName() + ")";
-    // }
+    public int getArea_id() {
+        return area_id.getId();
+    }
 
     public PicArea getAreaId(){
         return area_id;

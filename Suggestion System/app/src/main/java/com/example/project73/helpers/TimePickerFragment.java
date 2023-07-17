@@ -3,29 +3,27 @@ package com.example.project73.helpers;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class TimePickerFragment extends DialogFragment {
 
     private static final String ARG_REQUEST_CODE = "requestCode";
     private static final String RESULT_TIME_KEY = "resultTimeKey";
     private static final String ARG_TIME = "time";
-    private TimePicker mTimePicker;
 
-    public static Time getSelectedTime(Bundle result)
-    {
-        //TIme time = (Time) result.getSerializable(RESULT_TIME_KEY);
-        //return time;
-        return (Time) result.getSerializable(RESULT_TIME_KEY);
+    public static LocalDateTime getSelectedTime(Bundle result) {
+        return (LocalDateTime) result.getSerializable(RESULT_TIME_KEY);
     }
 
-    public static TimePickerFragment newInstance(Date time, String requestCode) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static TimePickerFragment newInstance(LocalDateTime time, String requestCode) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_TIME, time);
         args.putString(ARG_REQUEST_CODE, requestCode);
@@ -34,13 +32,14 @@ public class TimePickerFragment extends DialogFragment {
         return fragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
         // Initialize the time picker dialog listener
         TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
-            Time resultTime = new Time(hourOfDay, minute, 0);
+            LocalDateTime resultTime = LocalDateTime.of(1970, 1, 1, hourOfDay, minute);
             Bundle result = new Bundle();
             result.putSerializable(RESULT_TIME_KEY, resultTime);
 
@@ -54,11 +53,10 @@ public class TimePickerFragment extends DialogFragment {
         int initialMinute = calendar.get(Calendar.MINUTE);
 
         // If a time was passed in as an argument, use that instead
-        Date time = (Date) getArguments().getSerializable(ARG_TIME);
+        LocalDateTime time = (LocalDateTime) getArguments().getSerializable(ARG_TIME);
         if (time != null) {
-            calendar.setTime(time);
-            initialHour = calendar.get(Calendar.HOUR_OF_DAY);
-            initialMinute = calendar.get(Calendar.MINUTE);
+            initialHour = time.getHour();
+            initialMinute = time.getMinute();
         }
 
         // Create the time picker dialog

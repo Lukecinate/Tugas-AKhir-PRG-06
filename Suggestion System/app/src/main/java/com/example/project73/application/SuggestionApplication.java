@@ -3,7 +3,6 @@ package com.example.project73.application;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.project73.helpers.ApiHelper;
 import com.example.project73.repository.FeedbackRepository;
 import com.example.project73.repository.PicAreaRepository;
 
@@ -16,6 +15,5 @@ public static final String TAG = "FeedbackApplication";
         Log.i(TAG, "FeedbackApplication.initialize() onCalled");
         FeedbackRepository.initialize(this);
         PicAreaRepository.initialize(this);
-        ApiHelper.initialize(this);
     }
 }

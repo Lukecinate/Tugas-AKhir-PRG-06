@@ -3,15 +3,17 @@ package com.example.project73.helpers;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DatePickerFragment extends DialogFragment {
 
@@ -19,13 +21,14 @@ public class DatePickerFragment extends DialogFragment {
     private static final String ARG_REQUEST_CODE = "requestCode";
     private static final String RESULT_DATE_KEY = "resultDateKey";
 
-    public static Date getSelectedDate(Bundle result)
-    {
-        Date date = (Date) result.getSerializable(RESULT_DATE_KEY);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static LocalDateTime getSelectedDate(Bundle result) {
+        LocalDateTime date = (LocalDateTime) result.getSerializable(RESULT_DATE_KEY);
         return date;
     }
 
-    public static DatePickerFragment newInstance(Date date, String requestCode){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static DatePickerFragment newInstance(LocalDateTime date, String requestCode) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_DATE, date);
         args.putString(ARG_REQUEST_CODE, requestCode);
@@ -34,6 +37,7 @@ public class DatePickerFragment extends DialogFragment {
         return fragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -43,9 +47,9 @@ public class DatePickerFragment extends DialogFragment {
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                Date resultDate = new GregorianCalendar(year, month, dayOfMonth).getTime();
+                LocalDateTime resultDate = LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0);
 
-                //create our result Bundle
+                // Create our result Bundle
                 Bundle result = new Bundle();
                 result.putSerializable(RESULT_DATE_KEY, resultDate);
 
@@ -54,17 +58,13 @@ public class DatePickerFragment extends DialogFragment {
             }
         };
 
-        Date date = (Date) getArguments().getSerializable(ARG_DATE);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int initialYear = calendar.get(Calendar.YEAR);
-        int initialMonth = calendar.get(Calendar.MONTH);
-        int initialDay = calendar.get(Calendar.DAY_OF_MONTH);
+        LocalDateTime date = (LocalDateTime) getArguments().getSerializable(ARG_DATE);
+        int initialYear = date.getYear();
+        int initialMonth = date.getMonthValue() - 1; // Month value is 0-based for DatePickerDialog
+        int initialDay = date.getDayOfMonth();
 
         return new DatePickerDialog(
                 requireContext(),
-//                null,
                 dateSetListener,
                 initialYear,
                 initialMonth,

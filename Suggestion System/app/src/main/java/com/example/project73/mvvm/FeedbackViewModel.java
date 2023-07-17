@@ -6,17 +6,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.project73.helpers.UploadHelper;
 import com.example.project73.model.Feedback;
 import com.example.project73.repository.FeedbackRepository;
 
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 public class FeedbackViewModel extends ViewModel {
     private static final String TAG = "FeedbackListViewModel";
 
     private MutableLiveData<List<Feedback>> feedbackMutableLiveData;
+    private UploadHelper mUploadHelper;
     public FeedbackRepository feedbackRepository;
 
     public FeedbackViewModel(){
@@ -70,4 +75,5 @@ public class FeedbackViewModel extends ViewModel {
         Log.d(TAG, "result : " + file+area_id);
         feedbackRepository.uploadfile(file, area_id, created_date, deadline, pre_status, suggest_name, suggestion, title);
     }
+
 }
