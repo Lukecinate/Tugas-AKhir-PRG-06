@@ -114,11 +114,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/uploadLang"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="10dp"
                 android:text="Deadline"
                 android:textColor="@color/blue_200"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/suggest_upload_text_image"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:text=""
+                android:textColor="@color/blue_200"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/suggest_date_button"
@@ -127,7 +136,7 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/blue_200"
                 tools:text="Monday Mar 27 11:56 EST 2023"
-                android:text="Monday Mar 27 11:56 EST 2023"
+                android:text="11-11-2023T00:00:00"
                 android:backgroundTint="@color/blue"/>
 
             <Button
@@ -137,7 +146,7 @@
                 android:layout_marginTop="6dp"
                 android:textColor="@color/blue_200"
                 tools:text="Monday Mar 27 11:56 EST 2023"
-                android:text="Monday Mar 27 11:56 EST 2023"
+                android:text="11-11-2023T00:00:00"
                 android:backgroundTint="@color/blue"/>
 
             <LinearLayout

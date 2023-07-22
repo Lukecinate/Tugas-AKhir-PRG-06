@@ -210,9 +210,9 @@ public class HomeFragment extends Fragment {
                 try {
 
                     if (!feedback.getPreStatus().isEmpty()){
-                        Glide.with(imageView.getContext())
+                        /*Glide.with(imageView.getContext())
                                 .load(ABSOLUTE_PATH_FILE + feedbackParam.getPrePhoto())
-                                .into(imageView);
+                                .into(imageView);*/
                         titleTextView.setText(feedback.getTitle());
                         dateTextView.setText(outputDate);
                         timeTextView.setText(outputTime);
@@ -221,9 +221,9 @@ public class HomeFragment extends Fragment {
                     }
 
                     if(!feedback.getPostStatus().isEmpty()){
-                        Glide.with(imageView.getContext())
+                        /*Glide.with(imageView.getContext())
                                 .load(feedbackParam.getPrePhoto())
-                                .into(imageView);
+                                .into(imageView);*/
                         titleTextView.setText(feedback.getTitle());
                         dateTextView.setText(outputDate);
                         timeTextView.setText(outputTime);

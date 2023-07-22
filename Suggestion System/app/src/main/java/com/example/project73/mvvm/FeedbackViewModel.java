@@ -1,7 +1,9 @@
 package com.example.project73.mvvm;
 
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -70,6 +72,7 @@ public class FeedbackViewModel extends ViewModel {
         return  feedbackMutableLiveData;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void addFeedback(MultipartBody.Part file, int area_id, String created_date, String deadline, String pre_status, String suggest_name, String suggestion, String title){
         Log.d(TAG, "uploadData uploadfile onCalled()");
         Log.d(TAG, "result : " + file+area_id);

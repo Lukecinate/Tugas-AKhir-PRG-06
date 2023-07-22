@@ -9,6 +9,7 @@ import com.project04.WebSuggestionSystem.service.PicAreaService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
@@ -45,7 +46,7 @@ import java.util.UUID;
 public class FeedbackController {
     private static final String UPLOAD_DIR = "uploads/";
     private String filePathToString;
-    
+
     @Autowired
     FeedbackService feedbackService;
 
@@ -53,103 +54,129 @@ public class FeedbackController {
     PicAreaService picAreaService;
 
     @GetMapping("/getAllFeedback")
-    public List<Feedback> getAllFeedback(){
+    public List<Feedback> getAllFeedback() {
         return feedbackService.getAllFeedback();
     }
 
     @GetMapping("/getAllFeedbackBefore")
-    public List<Feedback> getAllFeedbackBefore(){
+    public List<Feedback> getAllFeedbackBefore() {
         return feedbackService.getAllBeforeFeedback();
     }
 
     @GetMapping("/getAllFeedbackOngoing")
-    public List<Feedback> getAllFeedbackOngoing(){
+    public List<Feedback> getAllFeedbackOngoing() {
         return feedbackService.getAllOngoingFeedback();
     }
 
     @GetMapping("/getAllFeedbackAfter")
-    public List<Feedback> getAllFeedbackAfter(){
+    public List<Feedback> getAllFeedbackAfter() {
         return feedbackService.getAllAfterFeedback();
     }
 
     @GetMapping("/getFeebackByKeywords")
-    public List<Feedback> getFeebackByKeywords(@RequestParam("keyword") String keyword){
+    public List<Feedback> getFeebackByKeywords(@RequestParam("keyword") String keyword) {
         return feedbackService.getAllByKeywords(keyword);
     }
 
     @RequestMapping(value = "/saveFeedback", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Feedback saveFeedback(HttpServletResponse response, @RequestBody Feedback feedbackParam){
+    public Feedback saveFeedback(HttpServletResponse response, @RequestBody Feedback feedbackParam) {
         // PicArea area = picAreaService.getPicArea(feedbackParam.getAreaId());
-        feedbackParam.setPrePhoto(getFilePath());
+        // feedbackParam.setPrePhoto(getFilePath());
         // feedbackParam.setArea_id(area);
         return feedbackService.save(feedbackParam);
     }
 
     @PutMapping("/updateFeedback")
-    public Feedback updateFeedback(HttpServletResponse response, @RequestParam("id") int id, @RequestBody Feedback feedbackParam){
+    public Feedback updateFeedback(HttpServletResponse response, @RequestParam("id") int id,
+            @RequestBody Feedback feedbackParam) {
         return feedbackService.update(id, feedbackParam);
-    } 
+    }
 
-
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(ModelMap m,  MultipartHttpServletRequest request, @RequestParam("area_id") int area_id, @RequestParam("created_date") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime created_date, @RequestParam("deadline") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime deadline, @RequestParam("pre_status") String pre_status, @RequestParam("suggest_name") String suggest_name, @RequestParam("suggestion") String suggestion, @RequestParam("title") String title) {
-        
-        MultiValueMap<String, MultipartFile> multiValueMap = request.getMultiFileMap();
-        List<MultipartFile> files = multiValueMap.isEmpty() ? null : multiValueMap.values().iterator().next();
+    @PostMapping("/savefeedback")
+    public ResponseEntity<String> savefeedback(ModelMap m,  MultipartHttpServletRequest request, @RequestParam("area_id") int area_id, @RequestParam("created_date") LocalDateTime created_dateStr, @RequestParam("deadline") LocalDateTime deadlineStr, @RequestParam("pre_status") String pre_status, @RequestParam("suggest_name") String suggest_name, @RequestParam("suggestion") String suggestion, @RequestParam("title") String title) {
+        MultiValueMap<String, MultipartFile> multiFileMap = request.getMultiFileMap();
+        List<MultipartFile> files = multiFileMap.isEmpty() ? null : multiFileMap.values().iterator().next();
         MultipartFile file = files != null && !files.isEmpty() ? files.get(0) : null;
+//
+//        Path resourceDirectory = Paths.get("target","classes","static","upload");
 
-        if(file.isEmpty())
-            return ResponseEntity.badRequest()
-                .body("No image file is uploaded");
-        
+        //Path resourceDirectory = Paths.get("src","main","resources","static");
+        Path resourceDirectory = Paths.get("target","classes","static","upload");
+        String absolutePath = resourceDirectory.toFile().getAbsolutePath();
 
+       // Path resourceDirectory1 = Paths.get("src","main","resources","static");
+        //String absolutePath1 = resourceDirectory.toFile().getAbsolutePath();
+
+//        MultiValueMap<String, MultipartFile> multiFileMap1 = request.getMultiFileMap();
+//        List<MultipartFile> files1 = multiFileMap1.isEmpty() ? null : multiFileMap1.values().iterator().next();
+//        MultipartFile file1 = files1 != null && !files1.isEmpty() ? files1.get(0) : null;
+
+//        Path resourceDirectory = Paths.get("target","classes","static","upload");
+//        String absolutePath = resourceDirectory.toFile().getAbsolutePath();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        // Parse the string to LocalDateTime using the formatter
+//        LocalDateTime dateTime = LocalDateTime.parse(deadline, formatter);
+//        Date date = null;
+        //LocalDateTime now = LocalDateTime.now();
+//
+//        try {
+//            date = dateFormat.parse(deadline);
+//        } catch (ParseException e) {
+//            // Handle parsing exception
+//            e.printStackTrace();
+//        }
+
+
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("No photo uploaded.");
+        }
         try {
-            // Create the upload directory if it doesn't exist
-            createUploadDirectoryIfNotExists();
 
-            // Save the uploaded file to the upload directory
-            String fileName = "SSys_" + LocalDate.now().toString() + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = Path.of(UPLOAD_DIR + fileName);
-            setFilePath(filePath.toString());
-            
+            // Generate a unique file name for the uploaded photo
+            String fileName = UUID.randomUUID().toString() + "." + getFileExtension1(file.getOriginalFilename());
+            // String fileName1 = UUID.randomUUID().toString() + "." + getFileExtension(file1.getOriginalFilename());
             Feedback feedback = new Feedback();
-            PicArea area = picAreaService.getPicArea(area_id);
+            // get the PicArea
+            PicArea areaId = picAreaService.getPicArea(area_id);
 
-            feedback.setArea_id(area);
-            feedback.setCreatedDate(created_date);
-            feedback.setDeadline(deadline);
-            feedback.setPrePhoto(getFilePath());
+            feedback.setArea_id(areaId);
+            feedback.setCreatedDate(created_dateStr);
+            feedback.setDeadline(deadlineStr);
+            feedback.setPrePhoto(fileName);
             feedback.setPreStatus(pre_status);
             feedback.setSuggestName(suggest_name);
-            feedback.setSuggestion(suggestion);
-            feedback.setTitle(title);
+            feedback.setSuggestion(suggestion);//
+            feedback.setTitle(title);//
             feedbackService.save(feedback);
-            
+
+            //unit.setFoto(fileName);
+            //unit.setPdfshopmanual(fileName1);
+            //unitService.saveUnit(unit);
+
+            // Save the photo to the upload directory
+            Path filePath = Paths.get(absolutePath, fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            
-            // Return a success message
-            return ResponseEntity.ok("File uploaded successfully: " + getFilePath() + "/" + fileName);
+
+
+
+            // Return the file path or other response as needed
+            return ResponseEntity.ok(filePath.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            // Return an error message
-            return ResponseEntity.status(500).body("Failed to upload the file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload photo.");
         }
     }
-
-    private void setFilePath(String path){
-        this.filePathToString = path;
-    }
-
-    private String getFilePath(){
-        return this.filePathToString;
-    }
-
-    private void createUploadDirectoryIfNotExists() throws IOException {
-        Path uploadPath = Path.of(UPLOAD_DIR);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectory(uploadPath);
+    
+    private String getFileExtension1(String filename) {
+        if (filename != null && !filename.isEmpty()) {
+            int dotIndex = filename.lastIndexOf('.');
+            if (dotIndex >= 0 && dotIndex < filename.length() - 1) {
+                return filename.substring(dotIndex + 1);
+            }
         }
+        return "";
     }
+
 
 }

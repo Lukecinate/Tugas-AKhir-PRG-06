@@ -1,9 +1,17 @@
 package com.example.project73.model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Feedback {
+    private static final String DATE_TIME_PATTERN = "dd-MM-yyyy HH:mm:ss";
 
     @SerializedName("id")
     @Expose
@@ -57,7 +65,12 @@ public class Feedback {
     @Expose
     private String modifiedDate;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Feedback() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+        this.createdDate = currentDateTime.format(formatter);
+        this.deadline = currentDateTime.format(formatter);
     }
 
     public Feedback(int id, int areaId, String createdDate, String deadline, String postPhoto, String prePhoto, String preStatus, String postStatus, String suggestName, String suggest, String title, String workerName, String modifiedDate) {

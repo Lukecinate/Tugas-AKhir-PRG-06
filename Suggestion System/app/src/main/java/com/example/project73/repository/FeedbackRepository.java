@@ -193,8 +193,8 @@ public class FeedbackRepository {
                     responseData.setValue(response.body());
                 } else{
                     Log.d(TAG, "Response URL error message : " + response.raw().request().url().toString());
-                    Log.d(TAG, "Error Message from API : " + response.message());
-                    Log.e(TAG, "errorResponse : " + response.errorBody().toString());
+                    Log.d(TAG, "Error Code from API : " + response.code());
+                    Log.e(TAG, "errorResponse : " + response.message().toString());
                 }
             }
 
