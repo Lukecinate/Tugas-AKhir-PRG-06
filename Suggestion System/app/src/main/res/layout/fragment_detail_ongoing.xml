@@ -34,6 +34,7 @@
             android:textColor="@color/blue_200"/>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_imageview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -43,13 +44,13 @@
             app:cardElevation="20dp">
 
             <ImageView
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:id="@+id/ongoing_image_view"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_menu_gallery"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
         </androidx.cardview.widget.CardView>
 
@@ -74,31 +75,50 @@
             android:textAlignment="center"
             android:textColor="@color/blue_200"/>
 
-        <TextView
-            android:id="@+id/ongoing_suggest_label"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Disarankan untuk membereskan alat yang telah di gunakan"
-            android:textAlignment="center"
-            android:textSize="22sp"
-            android:layout_marginTop="50dp"
-            android:textColor="@color/blue_200"/>
+            android:layout_height="150dp"
+            android:layout_marginTop="30dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="60dp"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_picname_label" >
 
-        <TextView
-            android:id="@+id/ongoing_name_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="300dp"
-            android:text="-Ibnu"
-            android:textSize="18dp"
-            tools:ignore="MissingConstraints"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/blue_200"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ongoing_suggest_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Disarankan untuk membereskan alat yang telah di gunakan"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/blue_200"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/ongoing_name_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="20dp"
+                    android:text="-Ibnu"
+                    android:textSize="18dp"
+                    tools:ignore="MissingConstraints"
+                    android:textColor="@color/blue_200"
+                    app:layout_constraintTop_toBottomOf="@id/ongoing_suggest_label"/>
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/ongoing_back_button"
@@ -108,7 +128,6 @@
                 android:textSize="16sp"
                 android:backgroundTint="@color/white"
                 android:textColor="@color/blue_200"
-                android:layout_marginTop="70dp"
                 android:layout_marginStart="30dp" />
 
             <Button
@@ -119,7 +138,6 @@
                 android:textSize="15sp"
                 android:backgroundTint="@color/blue_200"
                 android:textColor="@color/white"
-                android:layout_marginTop="70dp"
                 android:layout_marginStart="50dp" />
         </LinearLayout>
     </LinearLayout>

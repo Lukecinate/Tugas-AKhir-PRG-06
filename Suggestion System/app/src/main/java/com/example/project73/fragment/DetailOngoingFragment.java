@@ -50,8 +50,6 @@ public class DetailOngoingFragment extends Fragment {
     private static final String TAG = "DetailOngoingFragment";
     private static final String ARG_FEEDBACK_ID = "id";
     private static final String ARG_PICAREA_ID = "id_picarea";
-    private static final String SET_STATUS_ATTEMPT = "Ongoing";
-    private static final String ARG_PARAM2 = "param2";
 
     private Button backButton, attemptButton;
     private ImageView imageView;
