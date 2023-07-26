@@ -1,8 +1,6 @@
 package com.example.project73.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -10,6 +8,10 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.project73.R;
 import com.example.project73.fragment.AccessDeniedFragment;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         addLayout.setOnClickListener(new View.OnClickListener() {
             @Override
+            @RequiresApi(api = Build.VERSION_CODES.O)
             public void onClick(View view) {
                 // check if add is already selected or not.
                 if(selectedTab != 2){
@@ -161,14 +164,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*@Override
-    public void onFeedbackSelected(int userId) {
-        //Log.i(TAG, "MainActivity.onUserSelected= "+userId);
-        //Fragment fragment = new UserFragment();
-        Fragment fragment = FeedFragment.newInstance(userId);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
-    }*/
 }

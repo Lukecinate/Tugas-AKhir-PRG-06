@@ -1,12 +1,12 @@
 package com.example.project73.repository;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.project73.activity.MainActivity;
 import com.example.project73.api.ApiUtils;
 import com.example.project73.api.PicAreaService;
 import com.example.project73.model.PicArea;
@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class PicAreaRepository {
     private static final String TAG = "PicAreaRepository";
 
@@ -46,13 +47,13 @@ public class PicAreaRepository {
             public void onResponse(Call<List<PicArea>> call, Response<List<PicArea>> response) {
                 if (response.isSuccessful()){
                     picAreas.setValue(response.body());
-                    Log.d(TAG, "getFeedbacks.onResponse() " );
+                    Log.d(TAG, "getFeedbacks.onResponse() onCalled");
                 }
             }
 
             @Override
             public void onFailure(Call<List<PicArea>> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, "FAILURE : " + t.getMessage());
             }
         });
 
@@ -68,13 +69,13 @@ public class PicAreaRepository {
             public void onResponse(Call<PicArea> call, Response<PicArea> response) {
                 if (response.isSuccessful()){
                     picArea.setValue(response.body());
-                    Log.d(TAG, "getFeedbacks.onResponse() " );
+                    Log.d(TAG, "getFeedbacks.onResponse() onCalled" );
                 }
             }
 
             @Override
             public void onFailure(Call<PicArea> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, "FAILURE : " + t.getMessage());
             }
         });
 

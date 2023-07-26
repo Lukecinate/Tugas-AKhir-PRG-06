@@ -13,26 +13,36 @@ public class FeedbackService {
     FeedbackRepository feedbackRepository;
 
 
+    public Feedback get(int id){
+        Feedback res = feedbackRepository.findById(id).orElse(null);
+
+        if (res == null) return null;
+
+        return res;
+    }
+
     public Feedback save(Feedback feedback){
         Feedback res = feedbackRepository.save(feedback);
-        
-        if(res == null)return null;
+        if(res == null){
+            return null;
+        }
 
         return res;
     }
 
     public List<Feedback> getAllFeedback(){
         List<Feedback> res = feedbackRepository.findAll();
-        
-        if (res.isEmpty()) return null;
+        if (res.isEmpty())
+            return null;
 
         return res;
     }
 
     public List<Feedback> getAllBeforeFeedback(){
-        List<Feedback> res = feedbackRepository.findAllByPostStatusIsNull();
+        List<Feedback> res = feedbackRepository.findAllByPostStatusIsNullAndPreStatusIsNotNull();
 
-        if (res.isEmpty()) return null;
+        if (res.isEmpty())
+            return null;
 
         return res;
     }
@@ -40,7 +50,8 @@ public class FeedbackService {
     public List<Feedback> getAllOngoingFeedback(){
         List<Feedback> res = feedbackRepository.findAllByPostStatus("ongoing");
 
-        if (res.isEmpty()) return null;
+        if (res.isEmpty())
+            return null;
 
         return res;
     }
@@ -48,22 +59,36 @@ public class FeedbackService {
     public List<Feedback> getAllAfterFeedback(){
         List<Feedback> res = feedbackRepository.findAllByPostStatus("after");
 
-        if (res.isEmpty()) return null;
+        if (res.isEmpty())
+            return null;
 
         return res;
     }
 
     public Feedback update(int id, Feedback feedback){
         Feedback res = feedbackRepository.findById(id).orElse(null);
-        
-        if(res == null) return null;
-        
 
-        res.setArea_id(feedback.getAreaId());
+        if(res == null){
+            return null;
+        }
+
+        res.setArea_id(feedback .getArea_id());
         res.setPostPhoto(feedback.getPostPhoto());
         res.setPostStatus(feedback.getPostStatus());
         res.setWorkerName(feedback.getWorkerName());
         res.setModifiedDate(feedback.getModifiedDate());
+
+        return save(res);
+    }
+
+    public Feedback doAttempt(int id, String postStatus){
+        Feedback res = get(id);
+
+        if(res == null){
+            return null;
+        }
+
+        res.setPostStatus(postStatus);
 
         return save(res);
     }

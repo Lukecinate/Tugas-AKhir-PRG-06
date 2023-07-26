@@ -47,23 +47,28 @@ public class PicAreaService {
 
     public boolean update(int id, PicArea picArea){
         PicArea res = getPicArea(id);
-        
-        if(res == null) isSuccess = false;
-        
+
         res.setArea(picArea.getArea());
         res.setPicName(picArea.getPicName());
 
-        return isSuccess;
+        if(res == null){
+            isSuccess = false;
+            return isSuccess;
+        }else {
+            return isSuccess;
+        }
     }
 
     public boolean delete(int id){
         PicArea res = getPicArea(id);
 
-        if(res == null)
-            return isSuccess = false;
-        
-        picAreaRepository.deleteById(id);
-        return isSuccess;
+        if(res == null){
+            isSuccess = false;
+            return isSuccess;
+        }else {
+            picAreaRepository.deleteById(id);
+            return isSuccess;
+        }
     }
 
 }

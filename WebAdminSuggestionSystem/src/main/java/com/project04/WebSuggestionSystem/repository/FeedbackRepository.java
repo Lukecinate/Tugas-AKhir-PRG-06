@@ -14,10 +14,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 
     List<Feedback> findAll();
 
-    @Query("SELECT f FROM Feedback f ORDER BY f.createdDate ASC")
-    List<Feedback> findAllByPreStatusOrderByCreatedDate();
-
-    List<Feedback> findAllByPostStatusIsNull();
+    List<Feedback> findAllByPostStatusIsNullAndPreStatusIsNotNull();
 
     @Query("SELECT f FROM Feedback f WHERE f.postStatus LIKE %:keyword%")
     List<Feedback> findAllByPostStatus(String keyword);

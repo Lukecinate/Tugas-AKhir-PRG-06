@@ -1,18 +1,16 @@
 package com.example.project73.fragment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,21 +26,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentResultListener;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project73.R;
-import com.example.project73.helpers.ApiHelper;
-import com.example.project73.helpers.DatePickerFragment;
-import com.example.project73.helpers.DateTimeUtils;
-import com.example.project73.helpers.TimePickerFragment;
 import com.example.project73.model.Feedback;
 import com.example.project73.model.PicArea;
 import com.example.project73.mvvm.FeedbackViewModel;
@@ -55,11 +44,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -75,12 +61,7 @@ public class SuggestFragment extends Fragment {
 
     // Constants
     private static final String TAG = "SuggestFragment";
-    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
     private static final String PRE_STATUS = "Before";
-    private static final String PHOTO_DIRECTORY = "uploads/";
-    private static final String REQUEST_DATE = "DialogDate";
-    private static final String REQUEST_TIME = "DialogTime";
-    private static final String CURRENT_DATE_AND_TIME = Calendar.getInstance().toString();
     private static final int REQUEST_CODE_IMAGE = 2;
 
     // Views and ViewModels
@@ -112,6 +93,7 @@ public class SuggestFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_suggest, container, false);
 
+
         // Initialize views
         mCameraButton = v.findViewById(R.id.suggest_camera_button);
         mPhotoView = v.findViewById(R.id.suggest_upload_image_view);
@@ -126,25 +108,22 @@ public class SuggestFragment extends Fragment {
         // Set initial date and time
         mFeedback = new Feedback();
         LocalDateTime currentDateTime = LocalDateTime.now();
+        mTimeSelected = currentDateTime; // Initialize mTimeSelected with current date and time
+        mDateSelected = currentDateTime; // Initialize mDateSelected with current date and time
+
         mFeedback.setDeadline(currentDateTime.toString());
-        mDateButton.setText(currentDateTime.format(DateTimeFormatter.ofPattern("dd - MMM - yyyy")));
+        mDateButton.setText(currentDateTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
         mTimeButton.setText(currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         // Feedback ViewModel
         mFeedbackViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
         mPicAreaViewModel = new ViewModelProvider(this).get(PicAreaViewModel.class);
 
+        // Observe PicArea data
+        mPicAreaViewModel.getPicAreas().observe(getViewLifecycleOwner(), this::updatePicAreas);
+
         // Set listeners
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = HomeFragment.newInstance();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        mCancelButton.setOnClickListener(view -> onBackToHome());
 
         mDateButton.setOnClickListener(view -> showDatePicker());
 
@@ -171,15 +150,15 @@ public class SuggestFragment extends Fragment {
             }
         });
 
-
-
-        // Observe PicArea data
-        mPicAreaViewModel.getPicAreas().observe(getViewLifecycleOwner(), this::updatePicAreas);
-
-        /*// Load initial PicAreas
-        mPicAreaViewModel.getPicAreas();*/
-
         return v;
+    }
+
+    private void onBackToHome() {
+        Fragment fragment = HomeFragment.newInstance();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void updatePicAreas(List<PicArea> picAreas) {
@@ -200,94 +179,64 @@ public class SuggestFragment extends Fragment {
     }
 
     private void showDatePicker() {
-        FragmentManager manager = getChildFragmentManager();
-        manager.setFragmentResultListener(
-                REQUEST_DATE,
-                getViewLifecycleOwner(),
-                new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        if (result == null) {
-                            return;
-                        }
-                        mDateSelected = DatePickerFragment.getSelectedDate(result);
-                        combineDateAndTime();
-                    }
-                }
+        // Create a DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(),
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    // Handle the selected date here
+                    // Create a LocalDateTime object with the selected date
+                    mDateSelected = LocalDateTime.of(year, monthOfYear + 1, dayOfMonth, 0, 0);
+                    // Update the date button text
+                    mDateButton.setText(mDateSelected.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                },
+                // Get the current date as the default selected date
+                LocalDateTime.now().getYear(),
+                LocalDateTime.now().getMonthValue() - 1,
+                LocalDateTime.now().getDayOfMonth()
         );
 
-        DatePickerFragment dialog = null;
-        try {
-            if(mFeedback.getDeadline() != null){
-                LocalDateTime deadlineDateTime = LocalDateTime.parse(mFeedback.getDeadline());
-                dialog = DatePickerFragment.newInstance(deadlineDateTime, REQUEST_DATE);
-                dialog.show(manager, REQUEST_DATE);
-
-            }else {
-                Log.e(TAG, "mFeedback deadline is null");
-            }
-        } catch (DateTimeParseException | NullPointerException e) {
-            Log.e(TAG, e.getMessage());
-        }
+        // Show the DatePickerDialog
+        datePickerDialog.show();
     }
 
     private void showTimePicker() {
-        FragmentManager manager = getChildFragmentManager();
-        manager.setFragmentResultListener(
-                REQUEST_TIME,
-                getViewLifecycleOwner(),
-                new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        if (result == null) {
-                            return;
-                        }
-                        mTimeSelected = TimePickerFragment.getSelectedTime(result);
-                        combineDateAndTime();
-                    }
-                }
+        // Create a TimePickerDialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                requireContext(),
+                (view, hourOfDay, minute) -> {
+                    // Handle the selected time here
+                    // Create a LocalDateTime object with the selected time
+                    mTimeSelected = LocalDateTime.of(mTimeSelected.getYear(), mTimeSelected.getMonthValue(), mTimeSelected.getDayOfMonth(), hourOfDay, minute);
+                    // Update the time button text
+                    mTimeButton.setText(mTimeSelected.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                },
+                // Get the current time as the default selected time
+                LocalDateTime.now().getHour(),
+                LocalDateTime.now().getMinute(),
+                true // Set this to true if you want 24-hour format, otherwise false for 12-hour format
         );
 
-        try {
-            if(mFeedback.getDeadline() != null){
-                LocalDateTime deadlineTime = LocalDateTime.parse(mFeedback.getDeadline(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                TimePickerFragment dialog = TimePickerFragment.newInstance(deadlineTime, REQUEST_TIME);
-                dialog.show(manager, REQUEST_TIME);
-            }else {
-                Log.e(TAG, "mFeedback deadline is null");
-            }
-        } catch (DateTimeParseException | NullPointerException e) {
-            Log.e(TAG, e.getMessage());
-        }
+        // Show the TimePickerDialog
+        timePickerDialog.show();
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void combineDateAndTime() {
+    private String combineDateAndTime() {
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-            LocalDateTime dateTime = LocalDateTime.parse(mFeedback.getDeadline(), dateTimeFormatter);
+            LocalDateTime dateTime = LocalDateTime.parse(mDateButton.getText() + " " + mTimeButton.getText(), DateTimeFormatter.ofPattern("dd - MMM - yyyy HH:mm:ss"));
 
-            if (mDateSelected != null) {
-                dateTime = dateTime.withYear(mDateSelected.getYear())
-                        .withMonth(mDateSelected.getMonthValue())
-                        .withDayOfMonth(mDateSelected.getDayOfMonth());
-            }
+            // Convert LocalDateTime to database-friendly format (ISO 8601)
+            DateTimeFormatter dbFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String databaseDateTime = dateTime.format(dbFormatter);
 
-            if (mTimeSelected != null) {
-                dateTime = dateTime.withHour(mTimeSelected.getHour())
-                        .withMinute(mTimeSelected.getMinute())
-                        .withSecond(mTimeSelected.getSecond());
-            }
-
-            mFeedback.setDeadline(dateTime.format(dateTimeFormatter));
-
-            // Set the updated date and time values to the date and time buttons
-            mDateButton.setText(dateTime.format(DateTimeFormatter.ofPattern("dd - MMM - yyyy")));
-            mTimeButton.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
+            return databaseDateTime;
         } catch (DateTimeParseException e) {
             Log.e(TAG, "Error parsing date and time: " + e.getMessage());
+            return null;
         }
     }
 
@@ -299,8 +248,16 @@ public class SuggestFragment extends Fragment {
         mFeedback.setSuggestName(mName);
         mFeedback.setSuggest(mSuggestionText.getText().toString());
         mFeedback.setPreStatus(PRE_STATUS);
-        mFeedback.setCreatedDate(CURRENT_DATE_AND_TIME);
+        Date currentDate = new Date();
+
+        // Define a format for the date and time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        // Format the current date and time using the format
+        String created_date = dateFormat.format(currentDate);
+        mFeedback.setCreatedDate(created_date);
         mFeedback.setId(0);
+        mFeedback.setDeadline(mDateButton.getText().toString() + " " + mTimeButton.getText().toString());
 
         // Convert the image bitmap to a byte array
         Bitmap bitmap = ((BitmapDrawable) mPhotoView.getDrawable()).getBitmap();
@@ -312,18 +269,16 @@ public class SuggestFragment extends Fragment {
         if (mPhotoFile != null) {
             RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), mPhotoFile);
             Log.d(TAG, "URI File name : " + mPhotoFile.toURI());
+
             // Create the MultipartBody.Part using the RequestBody and the file name
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", mPhotoFile.getName(), requestBody);
             Log.d(TAG, "File name : " + mPhotoFile.getName());
-            // Saving the data
-            mFeedbackViewModel.addFeedback(filePart, mFeedback.getAreaId(), mFeedback.getCreatedDate(), mFeedback.getDeadline(), mFeedback.getPreStatus(), mFeedback.getSuggestName(), mFeedback.getSuggest(), mFeedback.getTitle());
 
-            Toast.makeText(requireContext(), "Berhasil!", Toast.LENGTH_SHORT);
-            /*Fragment fragment = HomeFragment.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();*/
+            // Saving the data
+            mFeedbackViewModel.addFeedback(filePart, mFeedback.getAreaId(), mFeedback.getCreatedDate().toString(), mFeedback.getDeadline(), mFeedback.getPreStatus(), mFeedback.getSuggestName(), mFeedback.getSuggest(), mFeedback.getTitle());
+
+            Toast.makeText(requireContext(), "Berhasil!", Toast.LENGTH_LONG).show();
+            onBackToHome();
         } else {
             // Handle the case when the image file is null
             Log.e(TAG, "Error: Image file is null");

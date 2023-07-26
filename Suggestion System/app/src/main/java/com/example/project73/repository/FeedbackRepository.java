@@ -1,8 +1,10 @@
 package com.example.project73.repository;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.project73.api.ApiUtils;
@@ -27,11 +29,13 @@ public class FeedbackRepository {
     private FeedbackService feedbackService;
     private Context context;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public FeedbackRepository(Context context) {
         feedbackService = ApiUtils.getFeedbackService();
         this.context = context;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void initialize(Context context){
         if (INSTANCE == null){
             INSTANCE = new FeedbackRepository(context);
@@ -57,11 +61,31 @@ public class FeedbackRepository {
 
             @Override
             public void onFailure(Call<List<Feedback>> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, "FAILURE : " + t.getMessage());
             }
         });
 
         return feedbacks;
+    }
+
+    public MutableLiveData<Feedback> getFeedbackById(String id){
+        MutableLiveData<Feedback> feedback = new MutableLiveData<>();
+
+        Call<Feedback> call = feedbackService.getFeedback(id);
+        call.enqueue(new Callback<Feedback>() {
+            @Override
+            public void onResponse(Call<Feedback> call, Response<Feedback> response) {
+                Log.d(TAG, "getFeedback(...).onResponse() called : " + response.body());
+                feedback.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Feedback> call, Throwable t) {
+                Log.e(TAG,"FAILURE : " + t.getMessage());
+            }
+        });
+
+        return feedback;
     }
 
     public MutableLiveData<List<Feedback>> getFeedbacksBefore(){
@@ -77,7 +101,7 @@ public class FeedbackRepository {
 
             @Override
             public void onFailure(Call<List<Feedback>> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
+                Log.e(TAG,"FAILURE : " + t.getMessage());
             }
         });
 
@@ -97,7 +121,7 @@ public class FeedbackRepository {
 
             @Override
             public void onFailure(Call<List<Feedback>> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
+                Log.e(TAG,"FAILURE : " + t.getMessage());
             }
         });
 
@@ -117,7 +141,7 @@ public class FeedbackRepository {
 
             @Override
             public void onFailure(Call<List<Feedback>> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
+                Log.e(TAG,"FAILURE : " + t.getMessage());
             }
         });
 
@@ -137,73 +161,66 @@ public class FeedbackRepository {
 
             @Override
             public void onFailure(Call<List<Feedback>> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
+                Log.e(TAG,"FAILURE : " + t.getMessage());
             }
         });
 
         return feedback;
     }
 
-    public void addFeedback(Feedback feedback){
-        Log.i(TAG, "addFeedback: called");
-        Call<Feedback> call = feedbackService.saveFeedback(feedback);
+    public MutableLiveData<Feedback> doAttempt(String id){
+        MutableLiveData<Feedback> feedback = new MutableLiveData<>();
+
+        Call<Feedback> call = feedbackService.doAttempt(id);
         call.enqueue(new Callback<Feedback>() {
             @Override
             public void onResponse(Call<Feedback> call, Response<Feedback> response) {
+                Log.d(TAG,"doAttempt.response() onCalled");
                 if(response.isSuccessful()){
-                    Log.i(TAG, "Feedback added: " + feedback.getTitle());
+                    Log.d(TAG,"Data : " + response.body());
+                    feedback.setValue(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<Feedback> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
+                Log.e(TAG, "FAILURE : " + t.getMessage());
             }
         });
+        return feedback;
     }
 
-    public void updateFeedback(String id, Feedback feedback){
-        Call<Feedback> call = feedbackService.update(id, feedback);
-        call.enqueue(new Callback<Feedback>() {
-            @Override
-            public void onResponse(Call<Feedback> call, Response<Feedback> response) {
-                if(response.isSuccessful()){
-                    Log.i(TAG, "Feedback Updated: " + feedback.getTitle());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Feedback> call, Throwable t) {
-                Log.e("Error : ", t.getMessage());
-            }
-        });
-    }
-
-    public MutableLiveData<ResponseBody> uploadfile(MultipartBody.Part file, int area_id, String created_date, String deadline, String pre_status, String suggest_name, String suggestion, String title) {
-        MutableLiveData<ResponseBody> responseData = new MutableLiveData<>();
-        Call<ResponseBody> call = feedbackService.uploadfile(file, area_id, created_date, deadline, pre_status, suggest_name, suggestion, title);
-        Log.d(TAG, "File name or path file : " + file.toString());
-
+    public MutableLiveData<ResponseBody> uploadfile(MultipartBody.Part file, int area_id, String created_date,String deadline,String pre_status, String suggest_name, String suggestion, String title) {
+        MutableLiveData<ResponseBody> respon = new MutableLiveData<>();
+        Call<ResponseBody> call = feedbackService.uploadfile(  file,   area_id,created_date,   deadline,pre_status,  suggest_name,  suggestion, title);
+        Log.d(TAG,"Found a File : " + file.toString());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d(TAG, "uploadFile.onResponse() Called");
-                if (response.isSuccessful()){
-                    Log.d(TAG, "uploadFile.onResponse() isSuccesful Called");
-                    responseData.setValue(response.body());
-                } else{
-                    Log.d(TAG, "Response URL error message : " + response.raw().request().url().toString());
-                    Log.d(TAG, "Error Code from API : " + response.code());
-                    Log.e(TAG, "errorResponse : " + response.message().toString());
+                Log.d(TAG,"uploadfile.response() onCalled");
+                if(response.isSuccessful()) {
+                    Log.d(TAG,"Data : " + response.body());
+                    respon.setValue(response.body());
+                }else{
+                    Log.d(TAG,"ERROR : "+response.raw().request().url().toString());
+                    Log.d(TAG,"ERROR MESSAGE : " + response.toString());
+
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        Log.e(TAG, "ERROR MESSAGE WHILE UPLOADING : " + errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "API ERROR : " + t.getMessage());
+                Log.e(TAG, "FAILURE : " + t.getMessage());
             }
         });
 
-        return responseData;
+        return respon;
     }
 }

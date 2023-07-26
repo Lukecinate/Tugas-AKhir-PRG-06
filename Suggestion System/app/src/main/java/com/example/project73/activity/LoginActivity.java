@@ -46,17 +46,14 @@ public class LoginActivity extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.password_text);
         loginButton = (ImageButton) findViewById(R.id.login_button);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = idNumberText.getText().toString();
-                String password = passwordText.getText().toString();
-                if (!isValidate(idNumberText, passwordText)) return;
-                new LoginTask().execute(username, password);
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
+        loginButton.setOnClickListener(v -> {
+            String username = idNumberText.getText().toString();
+            String password = passwordText.getText().toString();
+            if (!isValidate(idNumberText, passwordText)) return;
+            new LoginTask().execute(username, password);
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
         });
     }
 

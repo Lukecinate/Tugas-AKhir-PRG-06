@@ -2,7 +2,6 @@ package com.example.project73.helpers;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.DatePicker;
@@ -12,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DatePickerFragment extends DialogFragment {
@@ -37,9 +35,9 @@ public class DatePickerFragment extends DialogFragment {
         return fragment;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         DatePickerDialog.OnDateSetListener dateSetListener;

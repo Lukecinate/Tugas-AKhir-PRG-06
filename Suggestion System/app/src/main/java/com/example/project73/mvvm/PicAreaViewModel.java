@@ -1,7 +1,9 @@
 package com.example.project73.mvvm;
 
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,6 +14,7 @@ import com.example.project73.repository.PicAreaRepository;
 import java.util.List;
 
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class PicAreaViewModel extends ViewModel {
     private static final String TAG = "PicAreaViewModel";
 

@@ -1,9 +1,11 @@
 package com.project04.WebSuggestionSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "feedback")
@@ -15,9 +17,9 @@ public class Feedback {
     @Column(name = "id")
     public int id;
 
-    @ManyToOne
-    @JoinColumn(name = "area_id")
-    private PicArea area_id;
+
+    @Column(name = "area_id")
+    private int area_id;
 
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
@@ -52,13 +54,7 @@ public class Feedback {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
-    public int getArea_id() {
-        return area_id.getId();
-    }
 
-    public PicArea getAreaId(){
-        return area_id;
-    }
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -108,7 +104,11 @@ public class Feedback {
         return workerName;
     }
 
-    public void setArea_id(PicArea area_id) {
+    public int getArea_id() {
+        return area_id;
+    }
+
+    public void setArea_id(int area_id) {
         this.area_id = area_id;
     }
 

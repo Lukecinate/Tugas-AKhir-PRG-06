@@ -20,6 +20,11 @@ public class PicAreaController {
         return picAreaService.getAll();
     }
 
+    @GetMapping("/getAllPic")
+    public List<PicArea> getAllPic(){
+        return picAreaService.getAll();
+    }
+
     @GetMapping("/getPicArea")
     public PicArea getPicArea(@RequestParam("id") int id){
         return picAreaService.getPicArea(id);
