@@ -33,9 +33,21 @@ public interface FeedbackService {
     @GET("getFeebackByKeywords")
     Call<List<Feedback>> search(@Query("keyword") String keyword);
 
+    @GET("countFeedbackBeforeStatus")
+    Call<Long> countBeforeStatus();
+
+    @GET("countFeedbackOngoingStatus")
+    Call<Long> countOngoingStatus();
+
+    @GET("countFeedbackAfterStatus")
+    Call<Long> countAfterStatus();
 
     @PUT("doAttemptFeedback")
     Call<Feedback> doAttempt(@Query("id") String id);
+
+    @Multipart
+    @PUT("doFinishFeedback")
+    Call<ResponseBody> doFinish(@Part MultipartBody.Part file, @Query("id") int id, @Query("worker_name") String worker_name);
 
     @Multipart
     @POST("savefeedback")

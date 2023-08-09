@@ -1,10 +1,14 @@
 package com.example.project73.fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,17 +28,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project73.R;
+import com.example.project73.activity.MainActivity;
 import com.example.project73.model.Feedback;
 import com.example.project73.model.PicArea;
+import com.example.project73.model.User;
 import com.example.project73.mvvm.FeedbackViewModel;
 import com.example.project73.mvvm.PicAreaViewModel;
 
@@ -47,7 +61,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,7 +87,7 @@ public class SuggestFragment extends Fragment {
     private Button mDateButton, mTimeButton, mSaveButton, mCancelButton;
     private LocalDateTime mTimeSelected, mDateSelected;
     private ImageButton mCameraButton;
-    private String mName;
+    private String mName, tempTime, tempDate;
     private Uri mPhotoUri;
     private File mPhotoFile;
 
@@ -88,11 +101,30 @@ public class SuggestFragment extends Fragment {
         return new SuggestFragment();
     }
 
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    onImagePickerResult(result);
+                }
+            }
+    );
+
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Feedback ViewModel
+        mFeedbackViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
+        mPicAreaViewModel = new ViewModelProvider(this).get(PicAreaViewModel.class);
+    }
+
+    @Override
+    @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_suggest, container, false);
-
 
         // Initialize views
         mCameraButton = v.findViewById(R.id.suggest_camera_button);
@@ -105,6 +137,8 @@ public class SuggestFragment extends Fragment {
         mSuggestionText = v.findViewById(R.id.suggest_suggestion_text);
         mSpinnerPicArea = v.findViewById(R.id.suggest_dropdown_menu);
 
+
+
         // Set initial date and time
         mFeedback = new Feedback();
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -114,16 +148,11 @@ public class SuggestFragment extends Fragment {
         mFeedback.setDeadline(currentDateTime.toString());
         mDateButton.setText(currentDateTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
         mTimeButton.setText(currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
-        // Feedback ViewModel
-        mFeedbackViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
-        mPicAreaViewModel = new ViewModelProvider(this).get(PicAreaViewModel.class);
-
-        // Observe PicArea data
-        mPicAreaViewModel.getPicAreas().observe(getViewLifecycleOwner(), this::updatePicAreas);
+        tempTime = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        tempDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         // Set listeners
-        mCancelButton.setOnClickListener(view -> onBackToHome());
+        mCancelButton.setOnClickListener(view -> onBackToHomeFragment());
 
         mDateButton.setOnClickListener(view -> showDatePicker());
 
@@ -132,6 +161,8 @@ public class SuggestFragment extends Fragment {
         mSaveButton.setOnClickListener(view -> saveFeedback());
 
         mCameraButton.setOnClickListener(view -> openImagePicker());
+
+
 
         mSpinnerPicArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -153,7 +184,15 @@ public class SuggestFragment extends Fragment {
         return v;
     }
 
-    private void onBackToHome() {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Observe PicArea data
+        mPicAreaViewModel.getPicAreas().observe(getViewLifecycleOwner(), this::updatePicAreas);
+    }
+
+    private void onBackToHomeFragment() {
         Fragment fragment = HomeFragment.newInstance();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -186,8 +225,9 @@ public class SuggestFragment extends Fragment {
                     // Handle the selected date here
                     // Create a LocalDateTime object with the selected date
                     mDateSelected = LocalDateTime.of(year, monthOfYear + 1, dayOfMonth, 0, 0);
+                    tempDate = mDateSelected.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     // Update the date button text
-                    mDateButton.setText(mDateSelected.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                    mDateButton.setText(mDateSelected.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
                 },
                 // Get the current date as the default selected date
                 LocalDateTime.now().getYear(),
@@ -207,6 +247,7 @@ public class SuggestFragment extends Fragment {
                     // Handle the selected time here
                     // Create a LocalDateTime object with the selected time
                     mTimeSelected = LocalDateTime.of(mTimeSelected.getYear(), mTimeSelected.getMonthValue(), mTimeSelected.getDayOfMonth(), hourOfDay, minute);
+                    tempTime = mTimeSelected.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
                     // Update the time button text
                     mTimeButton.setText(mTimeSelected.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
                 },
@@ -220,50 +261,48 @@ public class SuggestFragment extends Fragment {
         timePickerDialog.show();
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String combineDateAndTime() {
-        try {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-            LocalDateTime dateTime = LocalDateTime.parse(mDateButton.getText() + " " + mTimeButton.getText(), DateTimeFormatter.ofPattern("dd - MMM - yyyy HH:mm:ss"));
-
-            // Convert LocalDateTime to database-friendly format (ISO 8601)
-            DateTimeFormatter dbFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-            String databaseDateTime = dateTime.format(dbFormatter);
-
-            return databaseDateTime;
-        } catch (DateTimeParseException e) {
-            Log.e(TAG, "Error parsing date and time: " + e.getMessage());
-            return null;
-        }
-    }
-
     private void saveFeedback() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
         // Set the value
-        mName = "Si Dia";
+        mName = sharedPreferences.getString("nama", "");
         mFeedback.setAreaId(mPicAreaId);
+
+        String title = mTitleText.getText().toString().trim();
+        if (TextUtils.isEmpty(title)) {
+            // Show an error message if the title is empty
+            mTitleText.setError("Enter Title!");
+            return;
+        }
         mFeedback.setTitle(mTitleText.getText().toString());
         mFeedback.setSuggestName(mName);
+
+        String suggest = mSuggestionText.getText().toString().trim();
+        if (TextUtils.isEmpty(title)) {
+            // Show an error message if the title is empty
+            mSuggestionText.setError("Enter Suggestion!");
+            return;
+        }
         mFeedback.setSuggest(mSuggestionText.getText().toString());
         mFeedback.setPreStatus(PRE_STATUS);
         Date currentDate = new Date();
 
+
+
         // Define a format for the date and time
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         // Format the current date and time using the format
         String created_date = dateFormat.format(currentDate);
         mFeedback.setCreatedDate(created_date);
         mFeedback.setId(0);
-        mFeedback.setDeadline(mDateButton.getText().toString() + " " + mTimeButton.getText().toString());
+        mFeedback.setDeadline(tempDate + "T" + tempTime);
 
         // Convert the image bitmap to a byte array
         Bitmap bitmap = ((BitmapDrawable) mPhotoView.getDrawable()).getBitmap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] byteArray = outputStream.toByteArray();
+        /*byte[] byteArray = outputStream.toByteArray();*/
 
         // Create a RequestBody using the byte array
         if (mPhotoFile != null) {
@@ -275,17 +314,17 @@ public class SuggestFragment extends Fragment {
             Log.d(TAG, "File name : " + mPhotoFile.getName());
 
             // Saving the data
-            mFeedbackViewModel.addFeedback(filePart, mFeedback.getAreaId(), mFeedback.getCreatedDate().toString(), mFeedback.getDeadline(), mFeedback.getPreStatus(), mFeedback.getSuggestName(), mFeedback.getSuggest(), mFeedback.getTitle());
+            mFeedbackViewModel.addFeedback(filePart, mFeedback.getAreaId(), mFeedback.getCreatedDate(), mFeedback.getDeadline(), mFeedback.getPreStatus(), mFeedback.getSuggestName(), mFeedback.getSuggest(), mFeedback.getTitle());
 
             Toast.makeText(requireContext(), "Berhasil!", Toast.LENGTH_LONG).show();
-            onBackToHome();
+            onBackToHomeFragment();
         } else {
             // Handle the case when the image file is null
             Log.e(TAG, "Error: Image file is null");
         }
     }
 
-    private void openImagePicker() {
+    /*private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_CODE_IMAGE);
     }
@@ -309,6 +348,30 @@ public class SuggestFragment extends Fragment {
                 // Handle the case when the bitmap is null
                 Log.e(TAG, "Error loading image");
             }
+        }
+    }*/
+
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        imagePickerLauncher.launch(intent);
+    }
+
+    private void onImagePickerResult(ActivityResult result) {
+        if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
+            return;
+        }
+
+        Intent data = result.getData();
+        Uri uri = data.getData();
+        Bitmap bitmap = getBitmapFromUri(uri);
+        if (bitmap != null) {
+            mPhotoView.setImageBitmap(bitmap);
+            // Save the URI for later use
+            mPhotoUri = uri;
+            mPhotoFile = getFileFromUri(uri);
+        } else {
+            // Handle the case when the bitmap is null
+            Log.e(TAG, "Error loading image");
         }
     }
 

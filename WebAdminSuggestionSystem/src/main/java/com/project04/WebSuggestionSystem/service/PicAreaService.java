@@ -1,11 +1,12 @@
 package com.project04.WebSuggestionSystem.service;
 
-import com.project04.WebSuggestionSystem.model.PicArea;
-import com.project04.WebSuggestionSystem.repository.PicAreaRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.project04.WebSuggestionSystem.model.PicArea;
+import com.project04.WebSuggestionSystem.repository.PicAreaRepository;
 
 @Service
 public class PicAreaService {
@@ -14,7 +15,7 @@ public class PicAreaService {
     private boolean isSuccess = true;
 
     public PicArea getPicArea(int id){
-        PicArea res = picAreaRepository.getReferenceById(id);
+        PicArea res = picAreaRepository.findById(id).orElse(null);
         return res;
     }
 
@@ -37,38 +38,30 @@ public class PicAreaService {
     public boolean save(PicArea picArea){
         PicArea res =  picAreaRepository.save(picArea);
 
-        if(res == null){
-            isSuccess = false;
-            return isSuccess;
-        }else {
-            return isSuccess;
-        }
+        if(res == null) isSuccess = false;
+
+        return isSuccess;
     }
 
     public boolean update(int id, PicArea picArea){
         PicArea res = getPicArea(id);
 
+        if(res == null) isSuccess = false;
+
         res.setArea(picArea.getArea());
         res.setPicName(picArea.getPicName());
 
-        if(res == null){
-            isSuccess = false;
-            return isSuccess;
-        }else {
-            return isSuccess;
-        }
+        return isSuccess;
     }
 
     public boolean delete(int id){
         PicArea res = getPicArea(id);
 
-        if(res == null){
-            isSuccess = false;
-            return isSuccess;
-        }else {
-            picAreaRepository.deleteById(id);
-            return isSuccess;
-        }
+        if(res == null) isSuccess = false;
+
+        picAreaRepository.deleteById(id);
+
+        return isSuccess;
     }
 
 }

@@ -37,9 +37,10 @@
             android:paddingBottom="15dp">
 
             <TextView
+                android:id="@+id/after_title_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Suggest Selesai Anjeng"
+                android:text="Suggest Selesai"
                 android:textAlignment="center"
                 android:textColor="@color/blue_200"
                 android:textSize="22sp"
@@ -65,7 +66,7 @@
                 android:src="@android:drawable/ic_menu_camera" />
 
             <TextView
-                android:id="@+id/ongoing_area_label"
+                android:id="@+id/after_area_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -94,7 +95,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/ongoing_suggest_label"
+                        android:id="@+id/after_suggest_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Disarankan untuk membereskan alat yang telah di gunakan"
@@ -104,7 +105,7 @@
                         tools:ignore="MissingConstraints" />
 
                     <TextView
-                        android:id="@+id/ongoing_name_label"
+                        android:id="@+id/after_name_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="200dp"
@@ -138,8 +139,8 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/suggest_cancel_button"
-                    android:layout_width="120dp"
+                    android:id="@+id/after_cancel_button"
+                    android:layout_width="125dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="20dp"
@@ -150,13 +151,13 @@
                     app:cornerRadius="20dp" />
 
                 <Button
-                    android:id="@+id/suggest_save_button"
-                    android:layout_width="120dp"
+                    android:id="@+id/after_save_button"
+                    android:layout_width="125dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="55dp"
                     android:layout_marginTop="18dp"
                     android:backgroundTint="@color/blue_200"
-                    android:text="Save"
+                    android:text="Finished"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />

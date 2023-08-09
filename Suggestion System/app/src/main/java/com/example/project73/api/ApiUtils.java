@@ -7,8 +7,9 @@ import androidx.annotation.RequiresApi;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class ApiUtils {
 
-//    public static final String API_URL = "http://10.8.2.91:8080/";
-    public static final String API_URL = "http://10.1.1.236:8080/";
+    public static final String API_URL = "http://10.8.2.91:8080/";
+  //  public static final String API_URL = "http://10.1.1.236:8080/";
+  //  public static final String API_URL = "http://192.168.65.225:8080/";
 //    public static final String API_URL = "http://192.168.224.2:8081/";
     public static final String API_IMAGE_URL = API_URL + "uploads/";
 

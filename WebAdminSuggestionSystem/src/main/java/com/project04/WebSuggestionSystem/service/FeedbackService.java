@@ -1,11 +1,13 @@
 package com.project04.WebSuggestionSystem.service;
 
-import com.project04.WebSuggestionSystem.model.Feedback;
-import com.project04.WebSuggestionSystem.repository.FeedbackRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.project04.WebSuggestionSystem.model.Feedback;
+import com.project04.WebSuggestionSystem.repository.FeedbackRepository;
 
 @Service
 public class FeedbackService {
@@ -23,9 +25,9 @@ public class FeedbackService {
 
     public Feedback save(Feedback feedback){
         Feedback res = feedbackRepository.save(feedback);
-        if(res == null){
-            return null;
-        }
+
+        if(res == null) return null;
+        res.setModifiedDate(LocalDateTime.now());
 
         return res;
     }
@@ -36,6 +38,14 @@ public class FeedbackService {
             return null;
 
         return res;
+    }
+
+    public List<Feedback> getReport(){
+        List<Feedback>rep = feedbackRepository.findReport();
+        if(rep.isEmpty())
+            return null;
+
+        return rep;
     }
 
     public List<Feedback> getAllBeforeFeedback(){
@@ -68,15 +78,11 @@ public class FeedbackService {
     public Feedback update(int id, Feedback feedback){
         Feedback res = feedbackRepository.findById(id).orElse(null);
 
-        if(res == null){
-            return null;
-        }
+        if(res == null) return null;
 
-        res.setArea_id(feedback .getArea_id());
         res.setPostPhoto(feedback.getPostPhoto());
         res.setPostStatus(feedback.getPostStatus());
         res.setWorkerName(feedback.getWorkerName());
-        res.setModifiedDate(feedback.getModifiedDate());
 
         return save(res);
     }
@@ -84,9 +90,7 @@ public class FeedbackService {
     public Feedback doAttempt(int id, String postStatus){
         Feedback res = get(id);
 
-        if(res == null){
-            return null;
-        }
+        if(res == null) return null;
 
         res.setPostStatus(postStatus);
 
@@ -95,5 +99,17 @@ public class FeedbackService {
 
     public List<Feedback> getAllByKeywords(String keywords){
         return feedbackRepository.findAllByKeywords(keywords);
+    }
+
+    public Long countFeedbackBeforeStatus(){
+        return feedbackRepository.countFeedbackBeforeStatus();
+    }
+
+    public Long countFeedbackAfterStatus(){
+        return feedbackRepository.countFeedbackAfterStatus();
+    }
+
+    public Long countFeedbackOngoingStatus(){
+        return feedbackRepository.countFeedbackOngoingStatus();
     }
 }

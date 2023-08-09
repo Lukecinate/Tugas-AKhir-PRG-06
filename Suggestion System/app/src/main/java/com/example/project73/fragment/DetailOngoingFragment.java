@@ -2,8 +2,6 @@ package com.example.project73.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -35,7 +30,6 @@ import com.example.project73.mvvm.PicAreaViewModel;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -53,12 +47,13 @@ public class DetailOngoingFragment extends Fragment {
 
     private Button backButton, attemptButton;
     private ImageView imageView;
-    private TextView areaTextView, picnameTextView, suggestionTextView, nameTextView;
+    private TextView areaTextView, picnameTextView, suggestionTextView, nameTextView, titleTextView;
     private FeedbackViewModel mFeedbackViewModel;
     private PicAreaViewModel mPicAreaViewModel;
     private PicArea mPicArea;
     private Feedback mFeedback;
-    private int mFeedbackId;
+    private int mFeedbackId, mPicAreaId;
+
 
 
     public DetailOngoingFragment() {
@@ -102,6 +97,7 @@ public class DetailOngoingFragment extends Fragment {
             String name = "-" + mFeedback.getSuggestName();
             suggestionTextView.setText(suggest);
             nameTextView.setText(name);
+            titleTextView.setText(mFeedback.getTitle());
             Log.d(TAG, "suggestion : " + suggestionTextView.getText().toString()
                     + "\n name : " + nameTextView.getText().toString());
             String imageUrl = ApiUtils.API_IMAGE_URL + mFeedback.getPrePhoto();
@@ -117,6 +113,7 @@ public class DetailOngoingFragment extends Fragment {
         mPicAreaViewModel = new ViewModelProvider(this).get(PicAreaViewModel.class);
         if (getArguments() != null) {
             mFeedbackId = getArguments().getInt(ARG_FEEDBACK_ID);
+            mPicAreaId = getArguments().getInt(ARG_PICAREA_ID);
         }
     }
 
@@ -129,18 +126,47 @@ public class DetailOngoingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail_ongoing, container, false);
 
         // initialize views
-        backButton = view.findViewById(R.id.ongoing_back_button);
-        attemptButton = view.findViewById(R.id.ongoing_attempt_button);
         areaTextView = view.findViewById(R.id.ongoing_area_label);
         picnameTextView = view.findViewById(R.id.ongoing_picname_label);
         suggestionTextView = view.findViewById(R.id.ongoing_suggest_label);
         nameTextView = view.findViewById(R.id.ongoing_name_label);
+        titleTextView = view.findViewById(R.id.ongoing_title_label);
+        backButton = view.findViewById(R.id.ongoing_back_button);
+        attemptButton = view.findViewById(R.id.ongoing_attempt_button);
         imageView = view.findViewById(R.id.ongoing_image_view);
 
         // event listener function
         backButton.setOnClickListener(v -> onBackToHomeFragment());
         attemptButton.setOnClickListener(v -> doAttempt());
         return view;
+    }
+
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Log.d(TAG, "onViewCreated.mFeedbackViewModel.getFeeback(...) onCalled with ID  : " + String.valueOf(mFeedbackId));
+        mFeedbackViewModel.getFeeback(String.valueOf(mFeedbackId)).observe(
+                getViewLifecycleOwner(),
+                feedback -> {
+                    Log.d(TAG, "Get Data : " + feedback);
+                    mFeedback = feedback;
+                    updateUI();
+                }
+        );
+
+        Log.d(TAG, "onViewCreated.mPicAreaViewModel.getPicAreaById(...) onCalled with ID  : " + getArguments().getInt(ARG_PICAREA_ID));
+        mPicAreaViewModel.getPicArea(String.valueOf(mPicAreaId)).observe(
+                getViewLifecycleOwner(),
+                picArea -> {
+                    Log.d(TAG, "Get Data : " + picArea);
+                    mPicArea = picArea;
+                    updateUI();
+                }
+        );
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -150,12 +176,12 @@ public class DetailOngoingFragment extends Fragment {
                 .setTitle("Attempt Work")
                 .setMessage("Do you really want to attempt work?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Log.d(TAG, "Alert dialog! Yes button clicked");
-                        performDoAttempt();
-                    }
-                })
+                .setPositiveButton(
+                        android.R.string.yes,
+                        (dialogInterface, i) -> {
+                            Log.d(TAG, "Alert dialog! Yes button clicked");
+                            performDoAttempt();
+                        })
                 .setNegativeButton(android.R.string.no, null)
                 .show();
 
@@ -163,63 +189,33 @@ public class DetailOngoingFragment extends Fragment {
     }
 
     public void performDoAttempt() {
-        String startDateString = mFeedback.getDeadline();
-
-        String feedbackId = String.valueOf(getArguments().getInt(ARG_FEEDBACK_ID));
-        Date startDate = null;
-        Date compareDate = new Date();
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss");
+        String deadlineDate = mFeedback.getDeadline();
+        String feedbackId = String.valueOf(mFeedbackId);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         try {
-            startDate = df.parse(startDateString);
-            if (compareDate.before(startDate)) {
+            Date dDate = df.parse(deadlineDate);
+            Date currentDate = new Date();
+
+            // Compare the deadline date with the current date
+            if (currentDate.after(dDate)) {
                 Toast.makeText(getContext(),
-                        "Tidak bisa mengerjakan, dikarenakan telah melewati tenggat waktu",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                Log.d(TAG, "Feedback Id successfully parse into string type : " + feedbackId);
-                mFeedbackViewModel.doAttempt(feedbackId);
-                Toast.makeText(getContext(), "Yaay", Toast.LENGTH_SHORT).show();
-                onBackToHomeFragment();
+                                "Tidak bisa mengerjakan, dikarenakan telah melewati tenggat waktu",
+                                Toast.LENGTH_LONG)
+                        .show();
+                return;
             }
+
+            // If the deadline date is in the future, proceed with the attempt
+            Log.d(TAG, "Feedback Id successfully parse into string type : " + feedbackId);
+            mFeedbackViewModel.doAttempt(feedbackId);
+            Toast.makeText(getContext(), "Selamat Mengerjakan!", Toast.LENGTH_SHORT).show();
+            onBackToHomeFragment();
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Log.d(TAG, "onViewCreated.mFeedbackViewModel.getFeebacksById(...) onCalled with ID  : " + String.valueOf(mFeedbackId));
-        mFeedbackViewModel.getFeebacksById(String.valueOf(mFeedbackId)).observe(
-                getViewLifecycleOwner(),
-                new Observer<Feedback>() {
-                    @Override
-                    public void onChanged(Feedback feedback) {
-                        Log.d(TAG, "Get Data : " + feedback);
-                        mFeedback = feedback;
-                        updateUI();
-                    }
-                }
-        );
-
-        Log.d(TAG, "onViewCreated.mPicAreaViewModel.getPicAreaById(...) onCalled with ID  : " + getArguments().getInt(ARG_PICAREA_ID));
-        mPicAreaViewModel.getPicArea(String.valueOf(getArguments().getInt(ARG_PICAREA_ID))).observe(
-                getViewLifecycleOwner(),
-                new Observer<PicArea>() {
-                    @Override
-                    public void onChanged(PicArea picArea) {
-                        Log.d(TAG, "Get Data : " + picArea);
-                        mPicArea = picArea;
-                        updateUI();
-                    }
-                }
-        );
-
-
-    }
 
     public void onBackToHomeFragment() {
         Fragment fragment = HomeFragment.newInstance();

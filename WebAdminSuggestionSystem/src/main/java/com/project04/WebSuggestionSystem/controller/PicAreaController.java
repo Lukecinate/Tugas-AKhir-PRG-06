@@ -1,13 +1,20 @@
 package com.project04.WebSuggestionSystem.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.project04.WebSuggestionSystem.model.PicArea;
 import com.project04.WebSuggestionSystem.model.Result;
 import com.project04.WebSuggestionSystem.service.PicAreaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 public class PicAreaController {

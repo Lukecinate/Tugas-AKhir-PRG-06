@@ -1,11 +1,16 @@
 package com.project04.WebSuggestionSystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "feedback")
@@ -52,6 +57,7 @@ public class Feedback {
     private String workerName;
 
     @Column(name = "modified_date")
+    @UpdateTimestamp
     private LocalDateTime modifiedDate;
 
 

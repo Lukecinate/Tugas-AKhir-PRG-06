@@ -1,13 +1,21 @@
 package com.example.project73.fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.project73.R;
+import com.example.project73.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +32,9 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView mNameTextView, mNimNpkTextView, mMajorTextView;
+
+    private ImageView mLogoutbtn;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -57,9 +68,40 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        mNameTextView = view.findViewById(R.id.profile_name_label);
+        mMajorTextView = view.findViewById(R.id.profile_major_name_label);
+        mNimNpkTextView = view.findViewById(R.id.profile_nim_npk_label);
+        mLogoutbtn = view.findViewById(R.id.logoutbtn);
+        mLogoutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
+        mNameTextView.setText(sharedPreferences.getString("nama", ""));
+        mNimNpkTextView.setText(sharedPreferences.getString("npk", ""));
+        return view;
+    }
+
+    private void logout() {
+        // Clear user data and redirect to LoginActivity
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

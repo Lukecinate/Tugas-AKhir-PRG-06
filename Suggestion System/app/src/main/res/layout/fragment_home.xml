@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_wallpaper4">
+    android:background="@drawable/background_wallpaper3">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -28,11 +28,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageButton
+                android:id="@+id/download"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="23dp"
-                android:src="@drawable/notification_icon"
+                android:background="@drawable/ic_report"
                 app:layout_constraintBottom_toBottomOf="@id/syss_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/syss_logo" />
@@ -61,7 +62,8 @@
                 android:textSize="15dp"
                 android:textStyle="italic|bold"
                 app:layout_constraintTop_toBottomOf="@+id/welcome_label"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="157dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,7 +108,7 @@
                         android:textStyle="italic" />
 
                     <TextView
-                        android:id="@+id/total_before_label"
+                        android:id="@+id/home_total_before_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -147,7 +149,7 @@
                         android:textStyle="italic" />
 
                     <TextView
-                        android:id="@+id/total_ongoing_label"
+                        android:id="@+id/home_total_ongoing_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -168,7 +170,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/after_image_button"
+                        android:id="@+id/home_after_image_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -188,7 +190,7 @@
                         android:textStyle="italic" />
 
                     <TextView
-                        android:id="@+id/total_after_label"
+                        android:id="@+id/home_total_after_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"

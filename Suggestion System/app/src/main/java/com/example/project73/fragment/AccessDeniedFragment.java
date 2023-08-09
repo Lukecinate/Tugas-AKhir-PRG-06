@@ -1,13 +1,17 @@
 package com.example.project73.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.project73.R;
+import com.example.project73.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,22 +26,18 @@ public class AccessDeniedFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mParam1, mParam2;
+    private Button mLoginButton;
 
     public AccessDeniedFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AccessDeniedFragment.
-     */
     // TODO: Rename and change types and number of parameters
+    public static AccessDeniedFragment newInstance() {
+        return new AccessDeniedFragment();
+    }
+
     public static AccessDeniedFragment newInstance(String param1, String param2) {
         AccessDeniedFragment fragment = new AccessDeniedFragment();
         Bundle args = new Bundle();
@@ -57,9 +57,20 @@ public class AccessDeniedFragment extends Fragment {
     }
 
     @Override
+    @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_access_denied, container, false);
+        View view = inflater.inflate(R.layout.fragment_access_denied, container, false);
+
+        mLoginButton = view.findViewById(R.id.access_denied_login_button);
+        mLoginButton.setOnClickListener(v -> startLogIn());
+
+        return view;
+    }
+
+    private void startLogIn() {
+        Intent i = new Intent(getActivity(), LoginActivity.class);
+        startActivity(i);
     }
 }

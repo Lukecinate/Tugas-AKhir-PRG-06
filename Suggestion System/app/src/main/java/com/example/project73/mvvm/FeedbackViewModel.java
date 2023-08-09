@@ -20,6 +20,7 @@ public class FeedbackViewModel extends ViewModel {
 
     private MutableLiveData<List<Feedback>> feedbacksMutableLiveData;
     private MutableLiveData<Feedback> feedbackMutableLiveData;
+    private MutableLiveData<Long> feedbackCountLiveData;
     public FeedbackRepository feedbackRepository;
 
     public FeedbackViewModel() {
@@ -55,10 +56,28 @@ public class FeedbackViewModel extends ViewModel {
         return feedbacksMutableLiveData;
     }
 
-    public MutableLiveData<Feedback> getFeebacksById(String id) {
+    public MutableLiveData<Feedback> getFeeback(String id) {
         Log.d(TAG, "FeedbackListViewModel.getFeedbacksById(...) called");
         feedbackMutableLiveData = feedbackRepository.getFeedbackById(id);
         return feedbackMutableLiveData;
+    }
+
+    public MutableLiveData<Long> countBeforeStatus(){
+        Log.d(TAG, "FeedbackListViewModel.countBeforeStatus() called");
+        feedbackCountLiveData = feedbackRepository.countBeforeStatus();
+        return feedbackCountLiveData;
+    }
+
+    public MutableLiveData<Long> countAfterStatus(){
+        Log.d(TAG, "FeedbackListViewModel.countAfterStatus() called");
+        feedbackCountLiveData = feedbackRepository.countAfterStatus();
+        return feedbackCountLiveData;
+    }
+
+    public MutableLiveData<Long> countOngoingStatus(){
+        Log.d(TAG, "FeedbackListViewModel.countOngoingStatus() called");
+        feedbackCountLiveData = feedbackRepository.countOngoingStatus();
+        return feedbackCountLiveData;
     }
 
     public void doAttempt(String id){
@@ -71,6 +90,12 @@ public class FeedbackViewModel extends ViewModel {
         Log.d(TAG, "uploadData.uploadfile onCalled()");
         Log.d(TAG, "result : " + file + ";\nresult ID : " + area_id);
         feedbackRepository.uploadfile(file, area_id, created_date, deadline, pre_status, suggest_name, suggestion, title);
+    }
+
+    public void doFinish(MultipartBody.Part file, int id, String worker_name){
+        Log.d(TAG, "uploadData.uploadfile onCalled()");
+        Log.d(TAG, "result : " + file + ";\nresult ID : " + id);
+        feedbackRepository.doFinish(file, id, worker_name);
     }
 
 }
